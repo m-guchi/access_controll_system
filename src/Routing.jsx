@@ -26,7 +26,7 @@ export default function Routing (props) {
     const classes = useStyles();
 
     return(
-        <Router basename="/system/gate">
+        <Router basename={process.env.REACT_APP_BASE_URL}>
             <Header>
                 <article className={classes.main}>
                     <Route exact path="/" component={DashboardPage}/>
