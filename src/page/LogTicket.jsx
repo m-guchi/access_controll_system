@@ -23,7 +23,7 @@ export default function LogTicketPage (props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    const dataMax = useInfo.setting.logTicketFetchMax;
+    const dataMax = useInfo.setting.log_ticket_fetch_max;
 
     
 

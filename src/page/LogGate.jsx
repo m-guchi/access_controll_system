@@ -22,7 +22,7 @@ export default function LogGatePage (props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    const dataMax = useInfo.setting.logGateFetchMax;
+    const dataMax = useInfo.setting.log_gate_fetch_max;
 
     const getGateLog = (token) => {
         customAxios.get("/gate/all?max="+dataMax,{
