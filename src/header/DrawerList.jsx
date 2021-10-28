@@ -70,8 +70,8 @@ export default function DrawerList (props) {
         <>
             <List>
             {all.map((val) => (
-                <Link to={"/"+val.key} className={classes.link} >
-                    <ListItem dense button key={val.key} onClick={clickPage}>
+                <Link key={val.key} to={"/"+val.key} className={classes.link} >
+                    <ListItem dense button onClick={clickPage}>
                         <ListItemIcon>{val.icon}</ListItemIcon>
                         <ListItemText primary={val.text} />
                     </ListItem>
@@ -84,8 +84,8 @@ export default function DrawerList (props) {
                     <Divider />
                     <List key={key}>
                     {(item.list).map((val) => (
-                        <Link to={"/"+val.key} className={classes.link} >
-                            <ListItem dense button key={val.key} onClick={clickPage}>
+                        <Link key={val.key} to={"/"+val.key} className={classes.link} >
+                            <ListItem dense button onClick={clickPage}>
                                 <ListItemIcon>{val.icon}</ListItemIcon>
                                 <ListItemText primary={val.text} />
                             </ListItem>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext }  from 'react';
 import { tokenContext } from '../context/token';
+import { infoContext } from '../context/info';
 import { customAxios } from '../templete/Axios';
 import Forbidden from '../templete/Forbidden';
 import LogTicketTable from '../grid/logTicket/Table';
@@ -7,21 +8,22 @@ import LogTicketTable from '../grid/logTicket/Table';
 const intervalTime = 60000;
 
 export default function LogTicketPage (props) {
-    const tokenData = useContext(tokenContext)
+    const useToken = useContext(tokenContext)
+    const useInfo = useContext(infoContext)
 
     const [logData, setLogdata] = useState(null);
     const [isFetching, toggleFetching] = useState(true);
 
     useEffect(() => {
-        getTicketLog(tokenData.token);
+        getTicketLog(useToken.token);
         const interval = setInterval(() => {
-            getTicketLog(tokenData.token);
+            getTicketLog(useToken.token);
         }, intervalTime);
         return () => clearInterval(interval);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    const dataMax = 10000;
+    const dataMax = useInfo.setting.logTicketFetchMax;
 
     
 
@@ -33,7 +35,9 @@ export default function LogTicketPage (props) {
         .then(res => {
             if(res.status===200){
                 if(res.data.info && res.data.info.token){
-                    getTicketLog(res.data.info.token)
+                    const token = res.data.info.token;
+                    useToken.set(token)
+                    getTicketLog(token)
                 }else{
                     setLogdata(res.data)
                 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useInfo, infoContext } from './info';
 import { useUser, userContext } from './user';
 import { tokenContext } from './token';
@@ -7,6 +7,7 @@ import { customAxios } from '../templete/Axios';
 
 
 export default function SetContext (props) {
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const infoData = useInfo();
     const userData = useUser();
@@ -29,14 +30,19 @@ export default function SetContext (props) {
             customAxios.get("/user/authority",{
                 headers: {"token": useToken.token}
             }),
+            customAxios.get("/setting/",{
+                headers: {"token": useToken.token}
+            }),
         ])
-        .then(([gateRes, areaRes, authRes]) => {
-            if(gateRes.status===200 && areaRes.status===200 && authRes.status===200){
+        .then(([gateRes, areaRes, authRes, settRes]) => {
+            if(gateRes.status===200 && areaRes.status===200 && authRes.status===200 && settRes.status===200){
                 infoData.set({
                     gate:gateRes.data,
                     area:areaRes.data,
                     authority:authRes.data,
+                    setting:settRes.data,
                 });
+                setIsLoaded(true);
             }
         })
     }
@@ -51,6 +57,8 @@ export default function SetContext (props) {
             }
         })
     }
+
+    if(!isLoaded) return null;
 
     return (
         <infoContext.Provider value={infoData}>
