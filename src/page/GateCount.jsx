@@ -19,6 +19,7 @@ export default function GateCountPage (props) {
     useEffect(() => {
         getGateCount(useToken.token);
         getVisitorsCount(useToken.token);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getGateCount = (token) => {
@@ -28,7 +29,9 @@ export default function GateCountPage (props) {
         .then(res => {
             if(res.status===200){
                 if(res.data.info && res.data.info.token){
-                    getGateCount(res.data.info.token);
+                    const token = res.data.info.token;
+                    useToken.set(token);
+                    getGateCount(token);
                 }else{
                     setGateCount(res.data)
                 }
@@ -43,7 +46,9 @@ export default function GateCountPage (props) {
         .then(res => {
             if(res.status===200){
                 if(res.data.info && res.data.info.token){
-                    getVisitorsCount(res.data.info.token);
+                    const token = res.data.info.token;
+                    useToken.set(token);
+                    getVisitorsCount(token);
                 }else{
                     setVisitorsCount(res.data);
                 }

@@ -9,7 +9,7 @@ import UsersRegister from '../grid/usersManagement/Register';
 import UsersDetail from '../grid/usersManagement/Detail';
 
 export default function UsersManagementPage (props) {
-    const userToken = useContext(tokenContext)
+    const useToken = useContext(tokenContext)
     const info = useContext(infoContext)
     const [usersData, setUsersData] = useState(null)
     const [selectUserData, setSelectUserData] = useState(null);
@@ -17,7 +17,7 @@ export default function UsersManagementPage (props) {
     const gateData = info ? info.gate : null;
 
     useEffect(() => {
-        getUserListData(userToken.token)
+        getUserListData(useToken.token)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -29,7 +29,7 @@ export default function UsersManagementPage (props) {
             if(res.status===200){
                 if(res.data.info && res.data.info.token){
                     const token = res.data.info.token;
-                    userToken.set(token);
+                    useToken.set(token);
                     getUserListData(token);
                 }else{
                     setUsersData(res.data)
@@ -44,21 +44,21 @@ export default function UsersManagementPage (props) {
                 <Grid item md={8} xs={12}>
                     <UsersTable
                         usersData={usersData}
-                        getUserListData={()=>getUserListData(userToken.token)}
+                        getUserListData={()=>getUserListData(useToken.token)}
                         gateData={gateData}
                         setSelectUserData={setSelectUserData}
                     />
                 </Grid>
                 {selectUserData && <Grid item md={4} sm={8} xs={12}>
                     <UsersDetail
-                        token={userToken.token}
+                        token={useToken.token}
                         gateData={gateData}
                         userData={selectUserData}
                         setSelectUserData={setSelectUserData}
                     />
                 </Grid>}
                 <Grid item sm={4} xs={12} >
-                    <UsersRegister token={userToken.token}/>
+                    <UsersRegister token={useToken.token}/>
                 </Grid>
             </Grid>
         </Forbidden>
