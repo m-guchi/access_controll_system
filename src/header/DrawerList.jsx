@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { userContext } from '../context/user';
 
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
@@ -31,7 +32,8 @@ const visitorsManagement = [
     {"key":"visitors_management","text":"参加者一覧","icon":<SupervisorAccountIcon />},
 ];
 const usersManagement = [
-    {"key":"users_management","text":"ユーザー一覧","icon":<PeopleAltIcon />},
+    {"key":"users_management","text":"ログインユーザー","icon":<PeopleAltIcon />},
+    {"key":"authority_management","text":"ユーザー権限","icon":<FingerprintIcon />},
 ];
 const settingManagement = [
     {"key":"setting_gate","text":"受付設定","icon":<RoomServiceIcon />},

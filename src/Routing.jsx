@@ -8,6 +8,7 @@ import VisitorsCountPage from './page/VisitorsCount';
 import VisitorsCountHistoryPage from './page/VisitorsCountHistory';
 import GateCountPage from './page/GateCount';
 import UsersManagementPage from './page/UsersManagement';
+import AuthorityManagementPage from './page/AuthorityManagement';
 import VisitorsManagementPage from './page/VisitorsManagement';
 import SettingGatePage from './page/SettingGate';
 import SettingAreaPage from './page/SettingArea';
@@ -36,6 +37,7 @@ export default function Routing (props) {
                     <Route path="/visitors_count_history" component={VisitorsCountHistoryPage}/>
                     <Route path="/gate_count" component={GateCountPage}/>
                     <Route path="/users_management" component={UsersManagementPage}/>
+                    <Route path="/authority_management" component={AuthorityManagementPage}/>
                     <Route path="/visitors_management" component={VisitorsManagementPage}/>
                     <Route path="/setting_gate" component={SettingGatePage}/>
                     <Route path="/setting_area" component={SettingAreaPage}/>
