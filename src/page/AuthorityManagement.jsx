@@ -2,19 +2,16 @@ import React, { useState, useEffect, useContext }  from 'react';
 import { customAxios } from '../templete/Axios';
 import Forbidden from '../templete/Forbidden';
 import { tokenContext } from '../context/token';
-import { infoContext } from '../context/info';
 import { Grid } from '@material-ui/core';
 import AuthorityTable from '../grid/authorityManagement/Table';
-import UsersRegister from '../grid/usersManagement/Register';
-import UsersDetail from '../grid/usersManagement/Detail';
+import AuthorityDetail from '../grid/authorityManagement/Detail';
 
 export default function AuthorityManagementPage (props) {
     const useToken = useContext(tokenContext)
-    const useInfo = useContext(infoContext)
-    const [authorityData, setAuthorityData] = useState(null)
-    const [selectAuthorityData, setSelectAuthorityData] = useState(null);
+    const [authorityData, setAuthorityData] = useState(null);
+    const [authorityAllData, setAuthorityAllData] = useState(null)
+    const [selectData, setSelectData] = useState(null);
 
-    // const gateData = useInfo ? useInfo.gate : null;
     const token = useToken.token
 
     useEffect(() => {
@@ -33,7 +30,14 @@ export default function AuthorityManagementPage (props) {
                     useToken.set(token);
                     getAuthorityListData(token);
                 }else{
-                    setAuthorityData(res.data)
+                    const data = res.data;
+                    let groupArr = [];
+                    Object.keys(data).forEach((key) => {
+                        groupArr = groupArr.concat(data[key]["group"]);
+                    })
+                    const groupArrNoDuplicate = Array.from(new Set(groupArr));
+                    setAuthorityAllData(groupArrNoDuplicate);
+                    setAuthorityData(res.data);
                 }
             }
         })
@@ -45,20 +49,18 @@ export default function AuthorityManagementPage (props) {
                 <Grid item md={8} xs={12}>
                     <AuthorityTable
                         data={authorityData}
-                        // getUserListData={()=>getAuthorityListData(token)}
-                        // gateData={gateData}
-                        // setSelectUserData={setSelectUserData}
+                        getAuthorityListData={()=>getAuthorityListData(token)}
+                        setSelectData={setSelectData}
                     />
                 </Grid>
-                {/* {selectUserData && <Grid item md={4} sm={8} xs={12}>
-                    <UsersDetail
-                        token={token}
-                        gateData={gateData}
-                        userData={selectUserData}
-                        setSelectUserData={setSelectUserData}
-                        getUserListData={()=>getAuthorityListData(token)}
+                {selectData && <Grid item md={4} sm={8} xs={12}>
+                    <AuthorityDetail
+                        authorityData={selectData}
+                        authorityAllData={authorityAllData}
+                        getAuthorityListData={()=>getAuthorityListData(token)}
+                        setSelectData={setSelectData}
                     />
-                </Grid>} */}
+                </Grid>}
             </Grid>
         </Forbidden>
     )
