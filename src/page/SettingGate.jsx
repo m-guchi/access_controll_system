@@ -7,8 +7,8 @@ import UpdateGateInfo from '../grid/settingGate/Update'
 import Forbidden from '../templete/Forbidden';
 
 export default function SettingGatePage (props) {
-    const userToken = useContext(tokenContext)
-    const infoData = useContext(infoContext)
+    const useToken = useContext(tokenContext)
+    const useInfo = useContext(infoContext)
 
     const [inputData, setInputData] = useState({
         gateId: null,
@@ -24,14 +24,14 @@ export default function SettingGatePage (props) {
             <Grid container>
                 <Grid item sm={6} xs={12}>
                     <GateTable
-                        infoData={infoData}
+                        infoData={useInfo}
                         setInputData={setInputData}
                     />
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <UpdateGateInfo
-                        token={userToken.token}
-                        infoData={infoData}
+                        token={useToken.token}
+                        infoData={useInfo}
                         inputData={inputData}
                         setInputData={setInputData}
                     />

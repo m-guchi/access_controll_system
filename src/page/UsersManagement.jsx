@@ -10,11 +10,11 @@ import UsersDetail from '../grid/usersManagement/Detail';
 
 export default function UsersManagementPage (props) {
     const useToken = useContext(tokenContext)
-    const info = useContext(infoContext)
+    const useInfo = useContext(infoContext)
     const [usersData, setUsersData] = useState(null)
     const [selectUserData, setSelectUserData] = useState(null);
 
-    const gateData = info ? info.gate : null;
+    const gateData = useInfo ? useInfo.gate : null;
 
     useEffect(() => {
         getUserListData(useToken.token)

@@ -7,8 +7,8 @@ import UpdateAreaInfo from '../grid/settingArea/Update'
 import Forbidden from '../templete/Forbidden';
 
 export default function SettingAreaPage (props) {
-    const userToken = useContext(tokenContext)
-    const infoData = useContext(infoContext)
+    const useToken = useContext(tokenContext)
+    const useInfo = useContext(infoContext)
 
     const [inputData, setInputData] = useState({
         areaId: null,
@@ -16,7 +16,7 @@ export default function SettingAreaPage (props) {
         isExist: false,
     })
 
-    const areaData = infoData ? infoData.area : null;
+    const areaData = useInfo ? useInfo.area : null;
 
     return(
         <Forbidden authority="setting_management">
@@ -29,8 +29,8 @@ export default function SettingAreaPage (props) {
                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <UpdateAreaInfo
-                        token={userToken.token}
-                        infoData={infoData}
+                        token={useToken.token}
+                        infoData={useInfo}
                         inputData={inputData}
                         setInputData={setInputData}
                     />
