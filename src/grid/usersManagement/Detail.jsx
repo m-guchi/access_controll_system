@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Typography, Table, TableBody } from '@material-ui/core';
 import PaperWrap from '../../templete/Paper';
 import { customAxios } from '../../templete/Axios';
+import { userContext } from '../../context/user';
 import UsersDetailInputItem from './DetailInputItem';
 import UsersDetailSelectItem from './DetailSelectItem';
 import UsersDetailSelectMultiItem from './DetailSelectMultiItem';
@@ -10,13 +11,26 @@ export default function UsersDetail (props) {
 
     const [errorMsg, setErrorMsg] = useState(null);
     const userData = props.userData;
-
+    
     const defaultData = {
         user_id: userData.user_id,
         login_id: userData.login_id,
         user_name: userData.user_name,
         password: null,
         authority_group: userData.authority_group,
+    }
+
+    useEffect(() => {
+        setErrorMsg(null);
+    },[userData])
+
+    const useUser = useContext(userContext)
+    const isEditUserMyself = () => {
+        if(userData && useUser){
+            return userData.user_id===useUser.data.user_id
+        }else{
+            return false;
+        }
     }
 
     const putAxios = (url, data, token) => {
@@ -38,8 +52,12 @@ export default function UsersDetail (props) {
                     props.setSelectUserData(res.data);
                     setErrorMsg(null);
                 }
-            }else if(res.status===400 && res.data.error.type==="already_login_id"){
-                setErrorMsg("このユーザーIDは既に使用されています");
+            }else if(res.status===400){
+                if(res.data.error.type==="already_login_id"){
+                    setErrorMsg("このユーザーIDは既に使用されています");
+                }else if(res.data.error.type==="cannot_change_myself"){
+                    setErrorMsg("自分の権限は変更できません");
+                }
             }else{
                 setErrorMsg("エラーが発生しました");
             }
@@ -163,6 +181,7 @@ export default function UsersDetail (props) {
                         name="権限グループ"
                         value={userData.authority_group}
                         saveItem={handleAuthority}
+                        canEdit={!isEditUserMyself()}
                     />
                     <UsersDetailSelectMultiItem
                         name="使用場所"

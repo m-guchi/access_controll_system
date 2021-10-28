@@ -48,6 +48,7 @@ export default function UsersDetailSelectItem (props) {
                     }
                 </TableCell>
                 <TableCell align="right">
+                    {props.canEdit &&
                     <IconButton className={classes.icon} onClick={()=>toggleEdit(!isEdit)}>
                         {isEdit ?
                             <ClearIcon fontSize="small"/>
@@ -55,6 +56,7 @@ export default function UsersDetailSelectItem (props) {
                             <EditIcon fontSize="small"/>
                         }
                     </IconButton>
+                    }
                 </TableCell>
             </React.Fragment> 
             }
