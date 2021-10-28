@@ -15,9 +15,10 @@ export default function UsersManagementPage (props) {
     const [selectUserData, setSelectUserData] = useState(null);
 
     const gateData = useInfo ? useInfo.gate : null;
+    const token = useToken.token
 
     useEffect(() => {
-        getUserListData(useToken.token)
+        getUserListData(token)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -44,21 +45,22 @@ export default function UsersManagementPage (props) {
                 <Grid item md={8} xs={12}>
                     <UsersTable
                         usersData={usersData}
-                        getUserListData={()=>getUserListData(useToken.token)}
+                        getUserListData={()=>getUserListData(token)}
                         gateData={gateData}
                         setSelectUserData={setSelectUserData}
                     />
                 </Grid>
                 {selectUserData && <Grid item md={4} sm={8} xs={12}>
                     <UsersDetail
-                        token={useToken.token}
+                        token={token}
                         gateData={gateData}
                         userData={selectUserData}
                         setSelectUserData={setSelectUserData}
+                        getUserListData={()=>getUserListData(token)}
                     />
                 </Grid>}
                 <Grid item sm={4} xs={12} >
-                    <UsersRegister token={useToken.token}/>
+                    <UsersRegister token={token}/>
                 </Grid>
             </Grid>
         </Forbidden>

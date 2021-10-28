@@ -51,6 +51,7 @@ export default function UsersDetail (props) {
                 }else{
                     props.setSelectUserData(res.data);
                     setErrorMsg(null);
+                    props.getUserListData();
                 }
             }else if(res.status===400){
                 if(res.data.error.type==="already_login_id"){
