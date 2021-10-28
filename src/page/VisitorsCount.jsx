@@ -26,7 +26,6 @@ export default function VisitorsCountPage (props) {
                 if(res.data.info && res.data.info.token){
                     getVisitorsCount(res.data.info.token);
                 }else{
-                    console.log(res.data)
                     setVisitorsCount(res.data);
                 }
             }
