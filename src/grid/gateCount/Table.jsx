@@ -29,7 +29,7 @@ export default function CountTable (props) {
                     const gateName = gateDetail.gate_name;
                     let sumNum = 0;
                     return (
-                        <TableRow key={row.area_id}>
+                        <TableRow key={index}>
                             <TableCell align="center">{gateName}</TableCell>
                             {
                                 Object.keys(props.infoData.attribute).map((val) => {
