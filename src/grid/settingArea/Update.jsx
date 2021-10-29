@@ -112,10 +112,18 @@ export default function UpdateAreaInfo (props) {
         })
     }
 
+    const handleDetailReset = () => {
+        props.setInputData({
+            areaId: null,
+            areaName: null,
+            isExist: false,
+        })
+    }
+
 
     return(
         <PaperWrap>
-            <Typography variant='h6'>エリア詳細</Typography>
+            <Typography variant='h6'>エリア設定</Typography>
             <FormBox>
                 <div>
                     <TextField
@@ -148,11 +156,15 @@ export default function UpdateAreaInfo (props) {
                         onClick={handleUpdate}
                     >{props.inputData.isExist ? "更新" : "登録"}</Button>
                     {props.inputData.isExist &&
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleDelete}
-                        >削除</Button>
+                        <>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={handleDelete}
+                            >削除</Button>
+                            <br/>
+                            <Button variant="outlined" onClick={handleDetailReset}>新規登録画面へ</Button>
+                        </>
                     }
                 </div>
             </FormBox>

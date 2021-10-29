@@ -126,6 +126,17 @@ export default function UpdateGateInfo (props) {
         })
     }
 
+    const handleDetailReset = () => {
+        props.setInputData({
+            gateId: null,
+            gateName: null,
+            outArea: "P000",
+            inArea: "P000",
+            isTicket: false,
+            isExist: false,
+        })
+    }
+
 
     if(!areaList) return null;
     return(
@@ -188,11 +199,14 @@ export default function UpdateGateInfo (props) {
                         onClick={handleUpdate}
                     >{props.inputData.isExist ? "更新" : "登録"}</Button>
                     {props.inputData.isExist &&
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleDelete}
-                        >削除</Button>
+                        <>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={handleDelete}
+                            >削除</Button>
+                            <Button variant="outlined" onClick={handleDetailReset}>新規登録画面へ</Button>
+                        </>
                     }
                 </div>
             </FormBox>
