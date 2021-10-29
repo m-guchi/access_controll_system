@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react'
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { customAxios } from '../../templete/Axios'
 import { infoContext } from '../../context/info';
-import { areaColor } from '../../data/color'
 import ReloadButton from '../../atoms/ReloadButton';
 import PaperWrap from '../../templete/Paper';
 
@@ -33,8 +32,6 @@ export default function NumLineChart (props) {
         })
     }
 
-    
-
     return (
         <PaperWrap>
             {infoData && infoData.area &&
@@ -48,12 +45,12 @@ export default function NumLineChart (props) {
                     {
                         Object.keys(infoData.area).map((index,key) => {
                             const val = infoData.area[index]
-                            if(val.area_id === "P000"){return null}
+                            if(val.hide_chart){return null}
                             return <Line
                                 key={index}
                                 type="monotone"
                                 dataKey={val.area_id}
-                                stroke={areaColor[key]}
+                                stroke={val.color_code}
                                 name={val.area_name}
                                 dot={false}
                             />
