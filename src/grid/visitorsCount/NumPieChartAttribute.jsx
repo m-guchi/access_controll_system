@@ -4,18 +4,16 @@ import { makeStyles } from '@material-ui/core/styles'
 import PaperWrap from '../../templete/Paper';
 import { Typography, Grid } from '@material-ui/core';
 
+
 const useStyles = makeStyles((theme) => ({
     chart: {
         margin: "0 auto",
     },
-    split3: {
-        width: '33%',
-    }
 }));
 
 export default function NumPieChartAttribute (props) {
     const classes = useStyles();
-
+    
     const RADIAN = Math.PI / 180;
     const label = ({name, value, midAngle, innerRadius, outerRadius, cx, cy}) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -29,69 +27,59 @@ export default function NumPieChartAttribute (props) {
             </Text>
         )
     }
-
+    
     const chartData = !props.visitorsCount ? null : Object.keys(props.visitorsCount).map((index) => {
         let row = props.visitorsCount[index];
-        row["sum_count"] = row.count.sum;
-        row["x_count"] = row.count.x;
-        row["y_count"] = row.count.y;
-        row["z_count"] = row.count.z;
+        const areaDetail = props.infoData.area[index];
+        if(!areaDetail) return null;
+        if(areaDetail.hide_chart) return null;
+        row["name"] = areaDetail.area_name;
         return row;
     })
+    
+    
+    const splitNum = window.innerWidth>970 ? 3 : 2;
+    const attributeNum = Object.keys(props.infoData.attribute).length;
+    const containerNum = Math.ceil(attributeNum/splitNum);
 
     if(!chartData || !label) return null;
+
     return(
         <PaperWrap>
-            <Grid container>
-                <Grid item xs={4}>
-                    <Typography>来場者(阪大生)</Typography>
-                    <PieChart width={350} height={300} className={classes.chart}>
-                        <Pie
-                            data={chartData}
-                            dataKey="x_count"
-                            nameKey="area_name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={120}
-                            fill="#0F9D58"
-                            labelLine={false}
-                            label={label}
-                        />
-                    </PieChart>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography>来場者(一般)</Typography>
-                    <PieChart width={350} height={300} className={classes.chart}>
-                        <Pie
-                            data={chartData}
-                            dataKey="y_count"
-                            nameKey="area_name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={120}
-                            fill="#0F9D58"
-                            labelLine={false}
-                            label={label}
-                        />
-                    </PieChart>
-                </Grid>
-                <Grid item xs={4}>
-                    <Typography>団体関係者</Typography>
-                    <PieChart width={350} height={300} className={classes.chart}>
-                        <Pie
-                            data={chartData}
-                            dataKey="z_count"
-                            nameKey="area_name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={120}
-                            fill="#0F9D58"
-                            labelLine={false}
-                            label={label}
-                        />
-                    </PieChart>
-                </Grid>
-            </Grid>
+        {(() => {
+            const items = [];
+            for (let i = 0; i <containerNum; i++) {
+                items.push(
+                    <Grid container>
+                        {
+                            Object.keys(props.infoData.attribute).map((index,key) => {
+                                if(key < i*splitNum || (i+1)*splitNum-1 < key) return null;
+                                const val = props.infoData.attribute[index];
+                                return (
+                                    <Grid item xs={12/splitNum}>
+                                        <Typography>{val.name}</Typography>
+                                        <PieChart width={350} height={300} className={classes.chart}>
+                                            <Pie
+                                                data={chartData}
+                                                dataKey={val.id}
+                                                nameKey="name"
+                                                cx="50%"
+                                                cy="50%"
+                                                outerRadius={120}
+                                                fill="#0F9D58"
+                                                labelLine={false}
+                                                label={label}
+                                            />
+                                        </PieChart>
+                                    </Grid>
+                                )
+                            })
+                        }
+                    </Grid>
+                )
+            }
+            return items;
+        })()}
         </PaperWrap>
     )
 }

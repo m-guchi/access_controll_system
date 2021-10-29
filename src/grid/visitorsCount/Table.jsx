@@ -12,22 +12,32 @@ export default function CountTable (props) {
                 <TableHead>
                     <TableRow>
                         <TableCell align="center">エリア名</TableCell>
-                        <TableCell align="center">来場者(阪大生)</TableCell>
-                        <TableCell align="center">来場者(一般)</TableCell>
-                        <TableCell align="center">団体関係者</TableCell>
+                        {
+                            Object.keys(props.infoData.attribute).map((val) => {
+                                return <TableCell align="center">{props.infoData.attribute[val].name}</TableCell>
+                            })
+                        }
                         <TableCell align="center">合計人数</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                 {Object.keys(props.visitorsCount).map((index) => {
                     const row = props.visitorsCount[index];
+                    const areaDetail = props.infoData.area[index];
+                    if(!areaDetail) return null;
+                    if(areaDetail.hide_chart) return null;
+                    const areaName = areaDetail.area_name;
+                    let sumNum = 0;
                     return (
-                        <TableRow key={row.area_id}>
-                            <TableCell align="center">{row.area_name}</TableCell>
-                            <TableCell align="center">{row.count.x}</TableCell>
-                            <TableCell align="center">{row.count.y}</TableCell>
-                            <TableCell align="center">{row.count.z}</TableCell>
-                            <TableCell align="center">{row.count.sum}</TableCell>
+                        <TableRow key={index}>
+                            <TableCell align="center">{areaName}</TableCell>
+                            {
+                                Object.keys(props.infoData.attribute).map((val) => {
+                                    sumNum += row[val];
+                                    return <TableCell align="center">{row[val]}</TableCell>
+                                })
+                            }
+                            <TableCell align="center">{sumNum}</TableCell>
                         </TableRow>
                     )
                 })}

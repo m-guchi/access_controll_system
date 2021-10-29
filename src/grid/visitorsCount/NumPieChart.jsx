@@ -28,10 +28,15 @@ export default function NumPieChart (props) {
 
     const chartData = !props.visitorsCount ? null : Object.keys(props.visitorsCount).map((index) => {
         let row = props.visitorsCount[index];
-        row["sum_count"] = row.count.sum;
-        row["x_count"] = row.count.x;
-        row["y_count"] = row.count.y;
-        row["z_count"] = row.count.z;
+        const areaDetail = props.infoData.area[index];
+        if(!areaDetail) return null;
+        if(areaDetail.hide_chart) return null;
+        row["name"] = areaDetail.area_name;
+        let countSum = 0;
+        Object.keys(props.infoData.attribute).map((val) => {
+            countSum += row[val];
+        });
+        row["sum"] = countSum;
         return row;
     })
 
@@ -41,8 +46,8 @@ export default function NumPieChart (props) {
             <PieChart width={350} height={300} className={classes.chart}>
                 <Pie
                     data={chartData}
-                    dataKey="sum_count"
-                    nameKey="area_name"
+                    dataKey="sum"
+                    nameKey="name"
                     cx="50%"
                     cy="50%"
                     outerRadius={120}
