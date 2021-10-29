@@ -33,7 +33,7 @@ const visitorsManagement = [
 ];
 const usersManagement = [
     {"key":"users_management","text":"ログインユーザー","icon":<PeopleAltIcon />},
-    {"key":"authority_management","text":"ユーザー権限","icon":<FingerprintIcon />},
+    {"key":"authority_management","text":"権限グループ","icon":<FingerprintIcon />},
 ];
 const settingManagement = [
     {"key":"setting_gate","text":"受付設定","icon":<RoomServiceIcon />},
