@@ -61,7 +61,7 @@ export default function GateCountPage (props) {
     return(
         <Forbidden authority="visitors_count">
             <Grid container>
-                <Grid item md={6} xs={12}>
+                <Grid item md={12} xs={12}>
                     <CountTable gateCount={gateCount} getGateCount={()=>getGateCount(useToken.token)} infoData={useInfo} periodMinute={periodMinute}/>
                 </Grid>
                 {/* <Grid item md={6} xs={12}>

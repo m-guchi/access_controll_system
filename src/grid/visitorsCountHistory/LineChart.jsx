@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, AreaChart, Area, Brush } from 'recharts';
 import { customAxios } from '../../templete/Axios'
 import { infoContext } from '../../context/info';
 import ReloadButton from '../../atoms/ReloadButton';
@@ -35,28 +35,31 @@ export default function NumLineChart (props) {
     return (
         <PaperWrap>
             {infoData && infoData.area &&
-            <ResponsiveContainer width="95%" minWidth={400} height={400}>
-                <LineChart data={historyData}>
+            <ResponsiveContainer width="98%" minWidth={300} height={500}>
+                <AreaChart data={historyData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time"/>
                     <YAxis/>
                     <Tooltip />
-                    <Legend />
+                    <Brush />
+                    <Legend verticalAlign="top" height={50} />
                     {
                         Object.keys(infoData.area).map((index,key) => {
                             const val = infoData.area[index]
                             if(val.hide_chart){return null}
-                            return <Line
+                            return <Area
                                 key={index}
                                 type="monotone"
                                 dataKey={val.area_id}
+                                stackId="1"
                                 stroke={val.color_code}
+                                fill={val.color_code}
                                 name={val.area_name}
                                 dot={false}
                             />
                         })
                     }
-                </LineChart>
+                </AreaChart>
             </ResponsiveContainer>
             }
             <ReloadButton onClick={()=>getUserHistory(props.token)} />
