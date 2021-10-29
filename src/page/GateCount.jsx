@@ -4,21 +4,21 @@ import { tokenContext } from '../context/token';
 import { infoContext } from '../context/info';
 import { customAxios } from '../templete/Axios';
 import CountTable from '../grid/gateCount/Table';
-import HallCount from '../grid/gateCount/HallCount';
+// import HallCount from '../grid/gateCount/HallCount';
 import Forbidden from '../templete/Forbidden';
-
-const periodMinute = 5;
 
 export default function GateCountPage (props) {
     const useToken = useContext(tokenContext);
-    const infoData = useContext(infoContext);
+    const useInfo = useContext(infoContext);
 
     const [gateCount, setGateCount] = useState(null)
-    const [visitorsCount, setVisitorsCount] = useState(null)
+    // const [visitorsCount, setVisitorsCount] = useState(null)
+
+    const periodMinute = useInfo.setting.gate_count_period_minute;
 
     useEffect(() => {
         getGateCount(useToken.token);
-        getVisitorsCount(useToken.token);
+        // getVisitorsCount(useToken.token);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -39,34 +39,34 @@ export default function GateCountPage (props) {
         })
     }
 
-    const getVisitorsCount = (token) => {
-        customAxios.get("/area/visitor/last",{
-            headers: {"token": token}
-        })
-        .then(res => {
-            if(res.status===200){
-                if(res.data.info && res.data.info.token){
-                    const token = res.data.info.token;
-                    useToken.set(token);
-                    getVisitorsCount(token);
-                }else{
-                    setVisitorsCount(res.data);
-                }
-            }
-        })
-    }
+    // const getVisitorsCount = (token) => {
+    //     customAxios.get("/area/visitor/last",{
+    //         headers: {"token": token}
+    //     })
+    //     .then(res => {
+    //         if(res.status===200){
+    //             if(res.data.info && res.data.info.token){
+    //                 const token = res.data.info.token;
+    //                 useToken.set(token);
+    //                 getVisitorsCount(token);
+    //             }else{
+    //                 setVisitorsCount(res.data);
+    //             }
+    //         }
+    //     })
+    // }
 
-    if(!infoData) return null;
+    // if(!useInfo) return null;
 
     return(
         <Forbidden authority="visitors_count">
             <Grid container>
                 <Grid item md={6} xs={12}>
-                    <CountTable gateCount={gateCount} getGateCount={()=>getGateCount(useToken.token)} gateInfo={infoData.gate} periodMinute={periodMinute}/>
+                    <CountTable gateCount={gateCount} getGateCount={()=>getGateCount(useToken.token)} infoData={useInfo} periodMinute={periodMinute}/>
                 </Grid>
-                <Grid item md={6} xs={12}>
+                {/* <Grid item md={6} xs={12}>
                     <HallCount gateCount={gateCount} visitorsCount={visitorsCount} gateInfo={infoData.gate}/>
-                </Grid>
+                </Grid> */}
             </Grid>
         </Forbidden>
     )

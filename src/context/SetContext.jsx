@@ -33,14 +33,18 @@ export default function SetContext (props) {
             customAxios.get("/setting/",{
                 headers: {"token": useToken.token}
             }),
+            customAxios.get("/visitor/attribute/",{
+                headers: {"token": useToken.token}
+            }),
         ])
-        .then(([gateRes, areaRes, authRes, settRes]) => {
-            if(gateRes.status===200 && areaRes.status===200 && authRes.status===200 && settRes.status===200){
+        .then(([gateRes, areaRes, authRes, settRes, attRes]) => {
+            if(gateRes.status===200 && areaRes.status===200 && authRes.status===200 && settRes.status===200 && attRes.status===200){
                 infoData.set({
                     gate:gateRes.data,
                     area:areaRes.data,
                     authority:authRes.data,
                     setting:settRes.data,
+                    attribute:attRes.data,
                 });
                 setIsLoaded(true);
             }

@@ -5,7 +5,7 @@ import ReloadButton from '../../atoms/ReloadButton';
 
 export default function CountTable (props) {
 
-    if(!props.gateCount || !props.gateInfo) return null;
+    if(!props.gateCount) return null;
     return(
         <PaperWrap>
             <Typography variant="body2">({props.periodMinute}分前から通過した人数)</Typography>
@@ -13,25 +13,31 @@ export default function CountTable (props) {
                 <TableHead>
                     <TableRow>
                         <TableCell align="center">受付名</TableCell>
-                        <TableCell align="center">来場者(阪大生)</TableCell>
-                        <TableCell align="center">来場者(一般)</TableCell>
-                        <TableCell align="center">団体関係者</TableCell>
+                        {
+                            Object.keys(props.infoData.attribute).map((val) => {
+                                return <TableCell align="center">{props.infoData.attribute[val].name}</TableCell>
+                            })
+                        }
                         <TableCell align="center">合計人数</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                 {Object.keys(props.gateCount).map((index) => {
                     const row = props.gateCount[index];
-                    const gateDetail = props.gateInfo[row.gate_id];
+                    const gateDetail = props.infoData.gate[index];
+                    if(!gateDetail) return null;
                     const gateName = gateDetail.gate_name;
-                    // if(gateDetail.in_area!=="P001" || gateDetail.out_area!=="P001") return null;
+                    let sumNum = 0;
                     return (
                         <TableRow key={row.area_id}>
                             <TableCell align="center">{gateName}</TableCell>
-                            <TableCell align="center">{row.count.x}</TableCell>
-                            <TableCell align="center">{row.count.y}</TableCell>
-                            <TableCell align="center">{row.count.z}</TableCell>
-                            <TableCell align="center">{row.count.sum}</TableCell>
+                            {
+                                Object.keys(props.infoData.attribute).map((val) => {
+                                    sumNum += row[val];
+                                    return <TableCell align="center">{row[val]}</TableCell>
+                                })
+                            }
+                            <TableCell align="center">{sumNum}</TableCell>
                         </TableRow>
                     )
                 })}
