@@ -6,9 +6,6 @@ import { Save as SaveIcon } from '@material-ui/icons';
 import PaperWrap from '../../templete/Paper';
 import { userContext } from '../../context/user';
 import { tokenContext } from '../../context/token';
-// import UsersDetailInputItem from './DetailInputItem';
-// import UsersDetailSelectItem from './DetailSelectItem';
-// import UsersDetailSelectMultiItem from './DetailSelectMultiItem';
 
 export default function AuthorityDetail (props) {
 
