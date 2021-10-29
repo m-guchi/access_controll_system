@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { infoContext } from '../../context/info';
 import PaperWrap from '../../templete/Paper';
 import { Typography } from '@material-ui/core';
-import { attributeList } from '../../data/attribute'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
 export default function VisitorDetail (props) {
     const classes = useStyles();
 
-    const visitor = props.postVisitorData
+    const visitor = props.postVisitorData;
+    const useInfo = useContext(infoContext);
 
     if(!visitor && !props.errorText) return null;
 
@@ -27,7 +28,7 @@ export default function VisitorDetail (props) {
             }
             {!props.errorText ?
                 <React.Fragment>
-                    <Typography variant="h6">【属性】{attributeList[visitor.attribute]}</Typography>
+                    <Typography variant="h6">【属性】{useInfo.attribute[visitor.attribute].name}</Typography>
                     {props.canVisitorsHistory && <Typography>【予約ID】{visitor.yoyaku_id}</Typography>}
                 </React.Fragment>
                 :

@@ -8,7 +8,7 @@ import Forbidden from '../templete/Forbidden';
 
 export default function VisitorsManagementPage (props) {
     const useToken = useContext(tokenContext)
-    const infoData = useContext(infoContext)
+    const useInfo = useContext(infoContext)
     const [visitorsData, setVisitorsData] = useState(null)
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function VisitorsManagementPage (props) {
             <Grid container>
                 <Grid item xs={12}>
                     <VisitorsTable
-                        infoData={infoData}
+                        infoData={useInfo}
                         visitorsData={visitorsData}
                         handleGetVisitorsData={handleGetVisitorsData}
                     />

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, IconButton } from '@material-ui/core';
 import { DataGrid, GridToolbar } from '@material-ui/data-grid';
+import { infoContext } from '../../context/info';
 import PaperWrap from '../../templete/Paper';
 import ReloadButton from '../../atoms/ReloadButton';
-import { attributeList } from '../../data/attribute';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -80,6 +80,8 @@ export default function VisitorsTable (props) {
     const [searchText, setSearchText] = useState(null);
     const [rows, setRows] = useState(props.visitorsData);
 
+    const useInfo = useContext(infoContext)
+
     useEffect(() => {
         setRows(props.visitorsData)
     },[props.visitorsData])
@@ -98,7 +100,7 @@ export default function VisitorsTable (props) {
     const row = (!props.infoData || !props.infoData.gate || !props.infoData.area || !rows) ? [] : rows.map(val => {
         val["id"] = val["yoyaku_id"];
         val["ticket_id_dis"] = val["ticket_id"];
-        val["attribute_dis"] = attributeList[val["attribute"]];
+        val["attribute_dis"] = useInfo.attribute[val["attribute"]].name;
         val["last_gate_dis"] = (val["last_gate"] in props.infoData.gate) ? props.infoData.gate[val["last_gate"]].gate_name : "";
         val["last_area_dis"] = (val["last_area"] in props.infoData.area) ? props.infoData.area[val["last_area"]].area_name : "";
         return val;
