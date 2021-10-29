@@ -136,6 +136,7 @@ export default function AuthorityDetail (props) {
                                         label="グループを新規作成"
                                         value={newGroup}
                                         onChange={handleNewGroup}
+                                        inputProps={{ maxLength: 60 }}
                                     /></Grid>
                                     <Grid item xs={3}><IconButton onClick={()=>handleSubmitNewGroup(authorityData.authority_name)}>
                                         <SaveIcon fontSize="small" color="primary" />

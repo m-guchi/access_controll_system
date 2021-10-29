@@ -131,6 +131,7 @@ export default function UpdateAreaInfo (props) {
                         label="エリアID"
                         variant="outlined"
                         size="small"
+                        inputProps={{ maxLength: 4 }}
                         onChange={handleInputAreaId}
                         InputLabelProps={{shrink: true}}
                         disabled={props.inputData.isExist}
@@ -142,6 +143,7 @@ export default function UpdateAreaInfo (props) {
                         label="エリア名"
                         variant="outlined"
                         size="small"
+                        inputProps={{ maxLength: 60 }}
                         onChange={handleInputAreaName}
                         InputLabelProps={{shrink: true}}
                     />

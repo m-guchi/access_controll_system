@@ -149,6 +149,7 @@ export default function UpdateGateInfo (props) {
                         label="受付ID"
                         variant="outlined"
                         size="small"
+                        inputProps={{ maxLength: 4 }}
                         onChange={handleInputGateId}
                         InputLabelProps={{shrink: true}}
                         disabled={props.inputData.isExist}
@@ -160,6 +161,7 @@ export default function UpdateGateInfo (props) {
                         label="受付名"
                         variant="outlined"
                         size="small"
+                        inputProps={{ maxLength: 60 }}
                         onChange={handleInputGateName}
                         InputLabelProps={{shrink: true}}
                     />
