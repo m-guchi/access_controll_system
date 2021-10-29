@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { infoContext } from '../../context/info';
 import { TextField, Button, Typography } from '@material-ui/core';
@@ -28,11 +28,6 @@ export default function QrScanRegister (props) {
         setInputError({ticket:false, yoyaku:false})
     }
 
-    useEffect(() => {
-        document.addEventListener("keydown", handleKeyDown, false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.useGateData]);
-
     const prefixArr = props.prefixArr;
     let prefixStringArrDup = [];
     prefixArr.forEach((val) => {
@@ -47,8 +42,8 @@ export default function QrScanRegister (props) {
     const ticketPrefixStringArr = Array.from(new Set(ticketPrefixStringArrDup)).sort();
     const inputTextArray = [];
 
-    const handleKeyDown = (e) => {
-        if(!props.useGateData || !props.useGateData.id) return false;
+    const handleKeyDown = useCallback((e) => {
+        if(!props.useGateData || !props.useGateData.id) return;
         const key = e.key;
         if(["Process"].includes(key)){
             setErrorMsg("全角文字は使用できません");
@@ -65,7 +60,7 @@ export default function QrScanRegister (props) {
         }else if(["Backspace","Delete","Shift","Tab","Process","Zenkaku"].includes(key)){
         }else{
             inputTextArray.push(key);
-            if(prefixStringArr.includes(key)){
+            if(prefixStringArr.includes(key)){ //予約ID
                 const inputTextString = inputTextArray.join("");
                 const isYoyakuMatch = prefixArr.some((val) => inputTextString===val)
                 if(isYoyakuMatch){
@@ -80,7 +75,14 @@ export default function QrScanRegister (props) {
                 }
             }
         }
-    };
+    },[props.useGateData]);
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyDown, false);
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [props.useGateData, handleKeyDown]);
 
     const removeFocus = () => {
         yoyakuElement.current.blur();
@@ -96,6 +98,7 @@ export default function QrScanRegister (props) {
         ticketElement.current.focus();
     }
     const keyDownEnter = () => {
+        console.log(props.useGateData)
         const ticket = ticketElement.current.value;
         const yoyaku = yoyakuElement.current.value;
         if(ticket.length===0 || (yoyaku.length===0 && Boolean(props.useGateData.ticket))){
