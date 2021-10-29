@@ -1,66 +1,105 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { TextField, Button, IconButton } from '@material-ui/core';
-import useKeypress from 'react-use-keypress';
+import React, { useState, useEffect, useRef, useContext } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { infoContext } from '../../context/info';
+import { TextField, Button, Typography } from '@material-ui/core';
 import PaperWrap from '../../templete/Paper';
 import FormBox from '../../templete/FormBox';
 import SendIcon from '@material-ui/icons/Send';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import { attributeNumberList, attributeList } from '../../data/attribute';
 
+const useStyles = makeStyles((theme) => ({
+    buttonBox: {
+        "& > *": {
+            margin: theme.spacing(0.5)
+        }
+    }
+}));
 
 export default function QrScanRegister (props) {
+    const classes = useStyles();
+
+    const useInfo = useContext(infoContext);
 
     const yoyakuElement = useRef(null);
     const ticketElement = useRef(null);
 
     const [isInputError, setInputError] = useState({ticket:false, yoyaku:false});
+    const [errorMsg, setErrorMsg] = useState(false);
+    const resetInputError = () => {
+        setInputError({ticket:false, yoyaku:false})
+    }
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown, false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [props.useGateData]);
 
-    const topStringArray = [];
-    const handleKeyDown = useKeypress(["0","1","2","3","4","5","6","7","8","9","-","T","Enter","Escape"," "], (e) => {
-        if(!props.useGateData || !props.useGateData.id) return null
-        if(topStringArray.length<6){
-            topStringArray.push(e.key);
-            if(["0","1","5","8"].includes(e.key)){
-                if(topStringArray.length===6){
-                    const topString = topStringArray.join("");
-                    if(attributeNumberList.includes(topString)){
-                        keyDownYoyaku(topString.substr(0,5));
-                    }
+    const prefixArr = props.prefixArr;
+    let prefixStringArrDup = [];
+    prefixArr.forEach((val) => {
+        prefixStringArrDup = prefixStringArrDup.concat(val.split(""));
+    })
+    const prefixStringArr = Array.from(new Set(prefixStringArrDup)).sort();
+    const ticketPrefixArr = useInfo.setting.ticket_prefix.split(',');
+    let ticketPrefixStringArrDup = [];
+    ticketPrefixArr.forEach((val) => {
+        ticketPrefixStringArrDup = ticketPrefixStringArrDup.concat(val.split(""));
+    })
+    const ticketPrefixStringArr = Array.from(new Set(ticketPrefixStringArrDup)).sort();
+    const inputTextArray = [];
+
+    const handleKeyDown = (e) => {
+        if(!props.useGateData || !props.useGateData.id) return false;
+        const key = e.key;
+        if(["Process"].includes(key)){
+            setErrorMsg("全角文字は使用できません");
+        }else{
+            setErrorMsg(null);
+        }
+        if(["Escape"," "].includes(key)){
+            inputTextArray.length = 0;
+            removeFocus();
+        }else if(key==="Enter"){ //Enter
+            inputTextArray.length = 0;
+            keyDownEnter();
+            removeFocus();
+        }else if(["Backspace","Delete","Shift","Tab","Process","Zenkaku"].includes(key)){
+        }else{
+            inputTextArray.push(key);
+            if(prefixStringArr.includes(key)){
+                const inputTextString = inputTextArray.join("");
+                const isYoyakuMatch = prefixArr.some((val) => inputTextString===val)
+                if(isYoyakuMatch){
+                    keyDownYoyaku(inputTextString);
+                }
+            }
+            if(ticketPrefixStringArr.includes(key)){ //入場券QRコード
+                const inputTextString = inputTextArray.join("");
+                const isTicketMatch = ticketPrefixArr.some((val) => inputTextString===val)
+                if(isTicketMatch){
+                    keyDownTicket(inputTextString);
                 }
             }
         }
-        if(e.key==="T"){ //入場券QRコード
-            keyDownTicket();
-        }else if(e.key==="Enter"){ //Enter
-            keyDownEnter();
-            topStringArray.splice(0) //配列クリア
-        }else if(e.key==="Escape"||e.key===" "){ //Escape or Space
-            topStringArray.splice(0) //配列クリア
-        }
-    },[]);
+    };
 
-    const keyDownYoyaku = (topString) => {
-        yoyakuElement.current.value = topString;
+    const removeFocus = () => {
+        yoyakuElement.current.blur();
+        ticketElement.current.blur();
+    }
+
+    const keyDownYoyaku = (string) => {
+        yoyakuElement.current.value = string.slice(0,-1);
         yoyakuElement.current.focus();
     }
-    const keyDownTicket = () => {
-        ticketElement.current.value = "";
+    const keyDownTicket = (string) => {
+        ticketElement.current.value = string.slice(0,-1);
         ticketElement.current.focus();
     }
     const keyDownEnter = () => {
         const ticket = ticketElement.current.value;
         const yoyaku = yoyakuElement.current.value;
-        if(ticket.length===0){
-            props.setErrorText("入場券QRコードを入力してください");
-            setInputError({ticket:true, yoyaku:false});
-        }else if(yoyaku.length===0 && Boolean(props.useGateData.ticket)){
-            props.setErrorText("予約QRコードを入力してください");
-            setInputError({ticket:false, yoyaku:true});
+        if(ticket.length===0 || (yoyaku.length===0 && Boolean(props.useGateData.ticket))){
+            return false;
         }else{
             props.setErrorText(null);
             setInputError({ticket:false, yoyaku:false});
@@ -70,13 +109,34 @@ export default function QrScanRegister (props) {
         }
     }
 
-    const [isRandomYoyaku, toggleRandomYoyaku] = useState(false);
+    const handleSubmit = () => {
+        const ticket = ticketElement.current.value;
+        const yoyaku = yoyakuElement.current.value;
+        let errorFlg = false;
+        let errorData = {ticket:false, yoyaku:false}
+        if(ticket.length===0){
+            props.setErrorText("入場券QRコードを入力してください");
+            errorData["ticket"] = true;
+            errorFlg = true;
+        }
+        if(yoyaku.length===0 && Boolean(props.useGateData.ticket)){
+            props.setErrorText("予約QRコードを入力してください");
+            errorData["yoyaku"] = true;
+            errorFlg = true;
+        }
+        setInputError(errorData);
+        if(!errorFlg){
+            keyDownEnter()
+        }
+    }
 
-    const randomYoyakuId = (attribute) => {
-        const nowDateInst = new Date();
-        const unixNowDate = String(nowDateInst.getTime());
-        yoyakuElement.current.value = attribute+(unixNowDate.substr(-9));
-        toggleRandomYoyaku(false);
+    const handleInputReset = () => {
+        yoyakuElement.current.value = "";
+        ticketElement.current.value = "";
+        inputTextArray.splice(0) //配列クリア
+        removeFocus();
+        props.setErrorText(null);
+        resetInputError();
     }
 
     if(!props.useGateData || !props.useGateData.id) return null
@@ -92,26 +152,11 @@ export default function QrScanRegister (props) {
                           }}
                         variant="outlined"
                         size="small"
-                        inputProps={{ maxLength: 13 }}
+                        inputProps={{ maxLength: useInfo.setting.yoyaku_id_max_length }}
                         disabled={props.isSending || props.isSm}
                         error={isInputError.yoyaku}
-                        value={props.qrDataInTicket.yoyakuId}
+                        value={props.isSm ? props.qrDataInTicket.yoyakuId : null}
                     />
-                    {!props.isSm &&
-                        <IconButton color={!isRandomYoyaku?"primary":""} component="span" onClick={()=>toggleRandomYoyaku(!isRandomYoyaku)}>
-                            <AssignmentIcon />
-                        </IconButton>
-                    }
-                    <div hidden={!isRandomYoyaku}>
-                        {
-                            Object.keys(attributeList).map((index) => (
-                                <Button variant="outlined" color="primary" onClick={()=>randomYoyakuId(index)}>
-                                    {attributeList[index]}
-                                </Button>
-                            ))
-                        }
-                        
-                    </div>
                 </div>
                 <div>
                     <TextField
@@ -122,21 +167,27 @@ export default function QrScanRegister (props) {
                           }}
                         variant="outlined"
                         size="small"
-                        inputProps={{ maxLength: 12 }}
+                        inputProps={{ maxLength: useInfo.setting.ticket_id_max_length }}
                         disabled={props.isSending || props.isSm}
                         error={isInputError.ticket}
-                        value={props.qrDataInTicket.ticketId}
+                        value={props.isSm ? props.qrDataInTicket.ticketId : null}
                     />
                 </div>
+                <Typography color="error">{errorMsg}</Typography>
                 {!props.isSm &&
-                    <div>
+                    <div className={classes.buttonBox}>
                         <Button
                             variant="contained"
                             color="primary"
                             endIcon={<SendIcon/>}
-                            onClick={keyDownEnter}
+                            onClick={handleSubmit}
                             disabled={props.isSending}
                         >送信</Button>
+                        <Button
+                            variant="outlined"
+                            color="default"
+                            onClick={handleInputReset}
+                        >リセット</Button>
                     </div>
                 }
             </FormBox>

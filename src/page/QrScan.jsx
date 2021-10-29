@@ -12,7 +12,6 @@ import SwitchScanMode from '../grid/qrScan/SwitchScanMode'
 import Forbidden from '../templete/Forbidden';
 import { customAxios } from '../templete/Axios';
 import { isMobile } from "react-device-detect";
-import { attributeNumberList } from '../data/attribute';
 
 
 export default function QrScanPage (props) {
@@ -44,7 +43,7 @@ export default function QrScanPage (props) {
 
     //prefixの一覧配列
     let prefixArr = [];
-    Object.keys(useInfo.attribute).map((index) => {
+    Object.keys(useInfo.attribute).forEach((index) => {
         const val = useInfo.attribute[index];
         prefixArr = prefixArr.concat(val.prefix);
     })
@@ -65,9 +64,9 @@ export default function QrScanPage (props) {
                         toggleCanUseScan(true)
                     }, nextScanTime);
                 }else{ //入場券ID入力されている→登録
-                    const data = {...qrDataInTicket, yoyakuId:data};
-                    submitData(data);
-                    setQrDataInTicket(data);
+                    const submitData = {...qrDataInTicket, yoyakuId:data};
+                    submitData(submitData);
+                    setQrDataInTicket(submitData);
                     setTimeout(() => {
                         resetQrDataInTicket();
                         toggleCanUseScan(true);
@@ -76,9 +75,9 @@ export default function QrScanPage (props) {
             }else if(isTicketMatch){ //入場券IDが入力された
                 toggleCanUseScan(false)
                 if(!useGateData.ticket){ //発券所ではない(入場券IDのみ)
-                    const data = {yoyakuId:"", ticketId:data};
-                    submitData(data)
-                    setQrDataInTicket(data)
+                    const submitData = {yoyakuId:"", ticketId:data};
+                    submitData(submitData)
+                    setQrDataInTicket(submitData)
                     setTimeout(() => {
                         resetQrDataInTicket();
                         toggleCanUseScan(true);
@@ -90,9 +89,9 @@ export default function QrScanPage (props) {
                             toggleCanUseScan(true)
                         }, nextScanTime);
                     }else{ //予約ID入力されている→登録
-                        const data = {...qrDataInTicket, ticketId:data};
-                        submitData(data)
-                        setQrDataInTicket(data)
+                        const submitData = {...qrDataInTicket, ticketId:data};
+                        submitData(submitData)
+                        setQrDataInTicket(submitData)
                         setTimeout(() => {
                             resetQrDataInTicket();
                             toggleCanUseScan(true);
@@ -347,6 +346,7 @@ export default function QrScanPage (props) {
                         errorText={errorText}
                         setErrorText={setErrorText}
                         qrDataInTicket={qrDataInTicket}
+                        prefixArr={prefixArr}
                         isSm={Boolean(isDevice==="sm")}
                     />
                     <VisitorDetail
