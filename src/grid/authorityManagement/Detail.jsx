@@ -133,7 +133,7 @@ export default function AuthorityDetail (props) {
                                 <Grid container>
                                     <Grid item xs={9}><TextField
                                         size="small"
-                                        label="新規作成"
+                                        label="グループを新規作成"
                                         value={newGroup}
                                         onChange={handleNewGroup}
                                     /></Grid>
