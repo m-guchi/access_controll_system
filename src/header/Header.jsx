@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles'
-import { AppBar, Toolbar, Typography, IconButton, Link } from '@material-ui/core';
-import LogoutButton from '../auth/LogoutButton'
+import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import LogoutButton from '../auth/LogoutButton'
 import HeaderDrawer from './Drawer';
 
 const drawerWidth = 240;
@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header (props) {
     const classes = useStyles();
-
     const [open, toggleOpen] = useState(false);
 
     const handleOpenDrawer = () => {
@@ -63,9 +62,7 @@ export default function Header (props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        <Link href="/system/gate/dashboard" underline="none">
-                            入退場管理システム
-                        </Link>
+                        入退場管理システム
                     </Typography>
                     <LogoutButton />
                 </Toolbar>
