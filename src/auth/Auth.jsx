@@ -19,22 +19,19 @@ export default function Auth (props) {
     useEffect(() => {
         fetchLogin(useToken.token)
         .then(res => {
-            if(res.data.login){
-                setLogin(true);
-                setLoaded(true);
-            }else{
-                if(res.data.info && res.data.info.token){
-                    useToken.set(res.data.info.token);
-                    fetchLogin(res.data.info.token)
-                    .then(res => {
-                        if(res.data.login){
-                            setLogin(true);
-                        }
-                        setLoaded(true);
-                    })
-                }else{
+            if(res.status===200){
+                if(res.data.data.login){
+                    setLogin(true);
                     setLoaded(true);
+                }else{
+                    if(res.data.token){
+                        useToken.set(res.data.token);
+                    }else{
+                        setLoaded(true);
+                    }
                 }
+            }else{
+                setLoaded(true);
             }
         })
     },[useToken])
@@ -46,23 +43,26 @@ export default function Auth (props) {
 
     const fetchLogin = (token) => {
         if(token){
-            return customAxios.get("/login",{
+            return customAxios.get("/login/",{
                 headers: {"token": token}
             })
         }else{
-            return customAxios.get("/login")
+            return customAxios.get("/login/")
         }
     }
 
     const postLogin = () => {
         setSubmitLoginLoading(true);
-        customAxios.post("/login",{
+        customAxios.post("/login/",{
             login_id: loginId,
             password: password,
         })
         .then(res => {
-            const status = res.status;
-            if(status!==200){
+            if(res.status==200 && res.data.ok){
+                setErrorLogin(null);
+                useToken.set(res.data.token);
+                setLogin(true);
+            }else{
                 const type = res.data.error.type;
                 switch(type){
                     case "not_in_user":
@@ -75,11 +75,6 @@ export default function Auth (props) {
                         setErrorLogin("エラーが発生しました");
                         break;
                 }
-            }
-            if(status===200){
-                setErrorLogin(null);
-                useToken.set(res.data.token);
-                setLogin(true);
             }
             setSubmitLoginLoading(false);
         })
