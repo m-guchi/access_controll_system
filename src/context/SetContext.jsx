@@ -26,8 +26,18 @@ export default function SetContext (props) {
         .then(([resInfo, resUser]) => {
             if(resInfo.status<=401 && resUser.status<=401){
                 setIsError(false);
-                if(resInfo.data.token) contextToken.set(resInfo.data.token);
-                if(resInfo.data.token && resInfo.status>200){
+                let renewToken = null;
+                if(resInfo.data.token){
+                    renewToken = resInfo.data.token
+                    contextToken.set(renewToken);
+                }else if(resUser.data.token){
+                    renewToken = resUser.data.token
+                    contextToken.set(renewToken);
+                }
+                if(renewToken && (
+                    (!resInfo.data.ok && resInfo.data.error.type==="need_this_token")
+                || (!resUser.data.ok && resUser.data.error.type==="need_this_token")
+                )){
                     Promise.all([
                         fetchSettingData(resInfo.data.token),
                         fetchUserData(resInfo.data.token)
@@ -72,7 +82,7 @@ export default function SetContext (props) {
 
 
     if(!isLoaded) return null;
-    if(isError) return <div>データ取得時にエラーが発生しました。</div>;
+    if(isError) return <div>データ取得時にエラーが発生しました。ページを更新してください。</div>;
 
     return (
         <infoContext.Provider value={infoContextData}>
