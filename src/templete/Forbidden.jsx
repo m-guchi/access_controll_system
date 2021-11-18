@@ -6,7 +6,7 @@ import { userContext } from '../context/user';
 export default function Forbidden (props) {
 
     const contextUser = useContext(userContext)
-    const isForbidden = !contextUser.data.authority.includes(props.authority)
+    const isForbidden = !contextUser.data.auth.includes(props.authority)
 
     return(
         isForbidden ?
