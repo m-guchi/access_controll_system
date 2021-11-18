@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Routing (props) {
+export default function Routing () {
     const classes = useStyles();
 
     return(
         <Router basename={process.env.REACT_APP_BASE_URL}>
             <Header>
                 <article className={classes.main}>
-                    <Route exact path="/" component={DashboardPage}/>
+                    <Route exact path="/"/>
                     <Route path="/dashboard" component={DashboardPage}/>
                     <Route path="/qr_scan" component={QrScanPage}/>
                     <Route path="/visitors_count" component={VisitorsCountPage}/>
