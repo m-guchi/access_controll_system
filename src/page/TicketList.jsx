@@ -3,7 +3,7 @@ import { tokenContext } from '../context/token';
 import { infoContext } from '../context/info';
 import { customAxios } from '../templete/Axios';
 import Forbidden from '../templete/Forbidden';
-import LogTicketTable from '../grid/logTicket/Table';
+import LogTicketTable from '../grid/ticketList/Table';
 import ReloadButton from '../atoms/ReloadButton';
 
 export default function TicketListPage (props) {
@@ -48,7 +48,7 @@ export default function TicketListPage (props) {
         })
     }
 
-    if(isError && isFetching) return null;
+    if(isError) return null;
     return(
         <Forbidden authority="log_watcher">
             <ReloadButton onClick={fetchTicket}/>

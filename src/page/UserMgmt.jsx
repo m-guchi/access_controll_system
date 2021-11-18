@@ -4,11 +4,11 @@ import Forbidden from '../templete/Forbidden';
 import { tokenContext } from '../context/token';
 import { infoContext } from '../context/info';
 import { Grid } from '@material-ui/core';
-import UsersTable from '../grid/usersManagement/Table';
-import UsersRegister from '../grid/usersManagement/Register';
-import UsersDetail from '../grid/usersManagement/Detail';
+import UsersTable from '../grid/userMgmt/Table';
+import UsersRegister from '../grid/userMgmt/Register';
+import UsersDetail from '../grid/userMgmt/Detail';
 
-export default function UsersManagementPage (props) {
+export default function UserMgmtPage (props) {
     const useToken = useContext(tokenContext)
     const useInfo = useContext(infoContext)
     const [usersData, setUsersData] = useState(null)

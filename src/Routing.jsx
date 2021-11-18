@@ -6,14 +6,14 @@ import DashboardPage from './page/Dashboard';
 import QrScanPage from './page/QrScan';
 import VisitorsCountPage from './page/VisitorsCount';
 import VisitorsCountHistoryPage from './page/VisitorsCountHistory';
+import UserListPage from './page/UserList';
+import TicketListPage from './page/TicketList';
 import GateCountPage from './page/GateCount';
-import UsersManagementPage from './page/UsersManagement';
+import UserMgmtPage from './page/UserMgmt';
 import AuthorityManagementPage from './page/AuthorityManagement';
-import VisitorsManagementPage from './page/VisitorsManagement';
 import SettingGatePage from './page/SettingGate';
 import SettingAreaPage from './page/SettingArea';
 import LogUserPassPage from './page/LogUserPass';
-import TicketListPage from './page/TicketList';
 
 export const authorityContext = createContext();
 
@@ -36,10 +36,10 @@ export default function Routing () {
                     <Route path="/visitors_count" component={VisitorsCountPage}/>
                     <Route path="/visitors_count_history" component={VisitorsCountHistoryPage}/>
                     <Route path="/gate_count" component={GateCountPage}/>
-                    <Route path="/users_management" component={UsersManagementPage}/>
                     <Route path="/ticket_list" component={TicketListPage}/>
+                    <Route path="/user_list" component={UserListPage}/>
+                    <Route path="/user_mgmt" component={UserMgmtPage}/>
                     <Route path="/authority_management" component={AuthorityManagementPage}/>
-                    <Route path="/visitors_management" component={VisitorsManagementPage}/>
                     <Route path="/setting_gate" component={SettingGatePage}/>
                     <Route path="/setting_area" component={SettingAreaPage}/>
                     <Route path="/log_user_pass" component={LogUserPassPage}/>

@@ -2,9 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, IconButton } from '@material-ui/core';
 import { DataGrid, GridToolbar } from '@material-ui/data-grid';
-import { infoContext } from '../../context/info';
 import PaperWrap from '../../templete/Paper';
-import ReloadButton from '../../atoms/ReloadButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -47,7 +45,7 @@ function QuickSearchToolbar(props) {
                 className={classes.textField}
                 value={props.value}
                 onChange={props.onChange}
-                placeholder="予約ID/入場券ID"
+                placeholder="ユーザーID"
                 InputProps={{
                     startAdornment: <SearchIcon fontSize="small" />,
                     endAdornment: (
@@ -67,42 +65,41 @@ function QuickSearchToolbar(props) {
 }
 
 const columns = [
-    {field: "yoyaku_id", headerName: "予約ID", width: 120},
-    {field: "ticket_id_dis", headerName: "入場券ID", width: 180},
-    {field: "attribute_dis", headerName: "属性", width: 140},
-    {field: "last_gate_dis", headerName: "最終通過受付", width: 180},
-    {field: "last_area_dis", headerName: "最終到達エリア", width: 180},
-    {field: "last_pass_time", headerName: "最終通過時間", width: 200},
+    {field: "user_id", headerName: "ユーザーID", width: 200},
+    {field: "attribute_name", headerName: "属性", width: 140},
+    {field: "time", headerName: "最終通過時間", width: 200},
+    {field: "area_id", headerName: "エリアID", width: 150},
+    {field: "area_name", headerName: "エリア名", width: 180},
 ]
 
 export default function VisitorsTable (props) {
 
     const [searchText, setSearchText] = useState(null);
-    const [rows, setRows] = useState(props.visitorsData);
+    const [rows, setRows] = useState(props.userData);
 
-    const useInfo = useContext(infoContext)
+    const contextInfo = props.infoData
 
     useEffect(() => {
-        setRows(props.visitorsData)
-    },[props.visitorsData])
+        setRows(props.userData)
+    },[props.userData])
 
     const requestSearch = (searchValue) => {
         setSearchText(searchValue)
         const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
-        const filteredRows = (!props.visitorsData) ? [] :props.visitorsData.filter((row) => {
-            if(searchRegex.test(row["yoyaku_id"])) return true;
-            if(searchRegex.test(row["ticket_id"])) return true;
-            return false;
-        });
+        const filteredRows = (!props.userData) ? [] :Object.keys(props.userData).filter((index) => {
+            return (searchRegex.test(props.userData[index]["user_id"]))
+        }).reduce((res,index) => {
+            res[index] = props.userData[index];
+            return res;
+        },{})
         setRows(filteredRows);
     }
 
-    const row = (!props.infoData || !props.infoData.gate || !props.infoData.area || !rows) ? [] : rows.map(val => {
-        val["id"] = val["yoyaku_id"];
-        val["ticket_id_dis"] = val["ticket_id"];
-        val["attribute_dis"] = useInfo.attribute[val["attribute"]].name;
-        val["last_gate_dis"] = (val["last_gate"] in props.infoData.gate) ? props.infoData.gate[val["last_gate"]].gate_name : "";
-        val["last_area_dis"] = (val["last_area"] in props.infoData.area) ? props.infoData.area[val["last_area"]].area_name : "";
+    const row = (!contextInfo || !rows) ? [] : Object.keys(rows).map(index => {
+        const val = rows[index];
+        val["id"] = val["user_id"];
+        val["attribute_name"] = (val["attribute_id"] in contextInfo.attribute) ? contextInfo.attribute[val["attribute_id"]].attribute_name : null;
+        val["area_name"] = (val["area_id"] in contextInfo.area) ? contextInfo.area[val["area_id"]].area_name : null;
         return val;
     })
 
@@ -120,10 +117,11 @@ export default function VisitorsTable (props) {
                     },
                 }}
                 autoHeight
+                loading={props.isFetching}
                 rows={row}
                 columns={columns}
+                rowsPerPageOptions={[100,250,500,1000]}
             />
-            <ReloadButton onClick={props.handleGetVisitorsData} />
         </PaperWrap>
     )
 }

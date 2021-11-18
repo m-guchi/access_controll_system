@@ -16,9 +16,9 @@ function CustomLoadingOverlay() {
 const columns = [
     {field: "time", headerName: "通過時間", "width": 200, type: 'dateTime',},
     {field: "user_id", headerName: "ユーザーID", "width": 200},
-    {field: "out_area", headerName: "前(エリアID)", "width": 100, hide: true},
+    {field: "out_area", headerName: "前(エリアID)", "width": 150, hide: true},
     {field: "out_area_name", headerName: "前(エリア名)", "width": 180},
-    {field: "in_area", headerName: "次(エリアID)", "width": 100, hide: true},
+    {field: "in_area", headerName: "次(エリアID)", "width": 150, hide: true},
     {field: "in_area_name", headerName: "次(エリア名)", "width": 180},
 ]
 
@@ -40,6 +40,7 @@ export default function LogGateTable (props) {
                 loading={props.isFetching}
                 rows={row}
                 columns={columns}
+                rowsPerPageOptions={[100,250,500,1000]}
             />
         </div>
     )

@@ -10,7 +10,6 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import PetsIcon from '@material-ui/icons/Pets';
-import ShowChartIcon from '@material-ui/icons/ShowChart';
 import RoomIcon from '@material-ui/icons/Room';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
 import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
@@ -24,11 +23,11 @@ const all = [
     {"key":"gate_count","text":"受付通過人数","icon":<DirectionsRunIcon />},
 ];
 const userMgmt = [
-    {"key":"visitors_management","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
+    {"key":"user_list","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
     {"key":"ticket_list","text":"チケット一覧","icon":<ConfirmationNumberIcon />},
 ];
 const loginUserMgmt = [
-    {"key":"users_management","text":"ログインユーザー","icon":<PeopleAltIcon />},
+    {"key":"user_mgmt","text":"ログインユーザー","icon":<PeopleAltIcon />},
     {"key":"authority_management","text":"権限グループ","icon":<FingerprintIcon />},
 ];
 const settingMgmt = [
