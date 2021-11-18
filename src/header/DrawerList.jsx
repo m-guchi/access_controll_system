@@ -19,38 +19,31 @@ import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 
 const all = [
     {"key":"dashboard","text":"ダッシュボード","icon":<DashboardIcon />},
-];
-const qrScan = [
-    {"key":"qr_scan","text":"QRコードスキャン","icon":<CropFreeIcon />},
-];
-const visitorsCount = [
+    {"key":"qr_scan","text":"コードスキャン","icon":<CropFreeIcon />},
     {"key":"visitors_count","text":"会場内人数","icon":<PetsIcon />},
-    {"key":"visitors_count_history","text":"会場内人数推移","icon":<ShowChartIcon />},
     {"key":"gate_count","text":"受付通過人数","icon":<DirectionsRunIcon />},
 ];
-const visitorsManagement = [
-    {"key":"visitors_management","text":"参加者一覧","icon":<SupervisorAccountIcon />},
+const userMgmt = [
+    {"key":"visitors_management","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
 ];
-const usersManagement = [
+const loginUserMgmt = [
     {"key":"users_management","text":"ログインユーザー","icon":<PeopleAltIcon />},
     {"key":"authority_management","text":"権限グループ","icon":<FingerprintIcon />},
 ];
-const settingManagement = [
+const settingMgmt = [
     {"key":"setting_gate","text":"受付設定","icon":<RoomServiceIcon />},
     {"key":"setting_area","text":"エリア設定","icon":<RoomIcon />},
 ]
 const logWatcher = [
     {"key":"log_gate","text":"受付通過ログ","icon":<HowToVoteIcon />},
-    {"key":"log_ticket","text":"入場券発行ログ","icon":<ConfirmationNumberIcon />},
+    {"key":"log_ticket","text":"チケット発行ログ","icon":<ConfirmationNumberIcon />},
 ]
 
 const authorityList = [
-    {"list":qrScan, "authority":"qr_scan"},
-    {"list":visitorsCount, "authority":"visitors_count"},
-    {"list":visitorsManagement, "authority":"visitors_management"},
-    {"list":usersManagement, "authority":"users_management"},
-    {"list":settingManagement, "authority":"setting_management"},
-    {"list":logWatcher, "authority":"log_watcher"},
+    {"list":userMgmt, "auth":"users_mgmt"},
+    {"list":loginUserMgmt, "auth":"login_users_mgmt"},
+    {"list":settingMgmt, "auth":"setting_mgmt"},
+    {"list":logWatcher, "auth":"log_watcher"},
 ]
 
 const useStyles = makeStyles((theme) => ({
@@ -63,11 +56,11 @@ const useStyles = makeStyles((theme) => ({
 export default function DrawerList (props) {
     const classes = useStyles();
     const userData = useContext(userContext)
-    const authority = userData.data.authority;
+    const auth = userData.data.auth;
 
     const clickPage = () => props.toggleOpen(false);
 
-    if(!authority) return null;
+    if(!auth) return null;
     return(
         <>
             <List>
@@ -81,7 +74,7 @@ export default function DrawerList (props) {
             ))}
             </List>
             {authorityList.map((item,key) => {
-                if(!authority.includes(item.authority)) return null;
+                if(!auth.includes(item.auth)) return null;
                 return (<>
                     <Divider />
                     <List key={key}>
