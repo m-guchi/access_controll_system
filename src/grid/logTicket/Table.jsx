@@ -14,17 +14,15 @@ function CustomLoadingOverlay() {
 }
 
 const columns = [
-    {field: "time", headerName: "時間", "width": 180, type: 'dateTime',},
-    {field: "yoyaku_id", headerName: "予約ID", "width": 140},
-    {field: "ticket_id", headerName: "入場券ID", "width": 140},
-    {field: "user_id", headerName: "登録者ID", "width": 100 ,hide: true},
-    {field: "user_name", headerName: "登録者名", "width": 140},
+    {field: "time", headerName: "受付時間", "width": 200, type: 'dateTime',},
+    {field: "ticket_id", headerName: "チケットID", "width": 220},
+    {field: "user_id", headerName: "ユーザーID", "width": 220},
 ]
 
 export default function LogTicketTable (props) {
 
     const row = (!props.logData) ? [] : props.logData.map(val => {
-        val["id"] = val["ticket_id"]+val["yoyaku_id"];
+        val["id"] = val["ticket_id"];
         return val;
     })
 
@@ -38,6 +36,7 @@ export default function LogTicketTable (props) {
                 loading={props.isFetching}
                 rows={row}
                 columns={columns}
+                rowsPerPageOptions={[100,250,500,1000]}
             />
         </div>
     )

@@ -25,6 +25,7 @@ const all = [
 ];
 const userMgmt = [
     {"key":"visitors_management","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
+    {"key":"ticket_list","text":"チケット一覧","icon":<ConfirmationNumberIcon />},
 ];
 const loginUserMgmt = [
     {"key":"users_management","text":"ログインユーザー","icon":<PeopleAltIcon />},
@@ -35,8 +36,7 @@ const settingMgmt = [
     {"key":"setting_area","text":"エリア設定","icon":<RoomIcon />},
 ]
 const logWatcher = [
-    {"key":"log_gate","text":"受付通過ログ","icon":<HowToVoteIcon />},
-    {"key":"log_ticket","text":"チケット発行ログ","icon":<ConfirmationNumberIcon />},
+    {"key":"log_user_pass","text":"受付通過ログ","icon":<HowToVoteIcon />},
 ]
 
 const authorityList = [
