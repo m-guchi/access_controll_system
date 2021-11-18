@@ -1,27 +1,23 @@
 import { useState, createContext, useCallback } from 'react'
 
+const dataFormat = {
+    area: [],
+    gate: [],
+    setting: [],
+    auth_list: [],
+    auth_group: [],
+    attribute: [],
+};
 
 export const infoContext = createContext({
-    gate: null,
-    area: null,
-    authority: null,
-    setting: null,
-    attribute: null,
+    data: dataFormat,
     set: () => {},
 });
 
 export const useInfo = () => {
-    const [gate, setGate] = useState(null);
-    const [area, setArea] = useState(null);
-    const [authority, setAuthority] = useState(null);
-    const [setting, setSetting] = useState(null);
-    const [attribute, setAttribute] = useState(null);
+    const [data, setData] = useState(dataFormat);
     const set = useCallback((data) => {
-        setGate(data.gate);
-        setArea(data.area);
-        setAuthority(data.authority);
-        setSetting(data.setting);
-        setAttribute(data.attribute);
+        setData(data);
     },[]);
-    return {gate, area, authority, setting, attribute, set}
+    return {data, set}
 }

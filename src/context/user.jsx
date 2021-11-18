@@ -1,12 +1,12 @@
 import { useState, createContext, useCallback } from 'react'
 
 const dataFormat = {
-    user_id: null,
-    user_name: null,
-    login_name: null,
-    authority_group: null,
-    authority: [],
-    place: [],
+    login_user_id: null,
+    login_id: null,
+    login_user_name: null,
+    auth_group: null,
+    auth: [],
+    gate_id_list: [],
 };
 
 export const userContext = createContext({

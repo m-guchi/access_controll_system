@@ -4,69 +4,79 @@ import { useUser, userContext } from './user';
 import { tokenContext } from './token';
 import { customAxios } from '../templete/Axios';
 
-
-
 export default function SetContext (props) {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isError, setIsError] = useState(false);
 
-    const infoData = useInfo();
-    const userData = useUser();
-    const useToken = useContext(tokenContext);
+    const infoContextData = useInfo();
+    const userContextData = useUser();
+    const contextToken = useContext(tokenContext);
 
     useEffect(() => {
-        getInfoData();
-        getUserData();
+        setIsLoaded(false);
+        getInitialData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[useToken.token])
+    },[contextToken.token])
 
-    const getInfoData = () => {
+    const getInitialData = () => {
         Promise.all([
-            customAxios.get("/gate/info",{
-                headers: {"token": useToken.token}
-            }),
-            customAxios.get("/area/info",{
-                headers: {"token": useToken.token}
-            }),
-            customAxios.get("/user/authority",{
-                headers: {"token": useToken.token}
-            }),
-            customAxios.get("/setting/",{
-                headers: {"token": useToken.token}
-            }),
-            customAxios.get("/visitor/attribute/",{
-                headers: {"token": useToken.token}
-            }),
+            fetchSettingData(contextToken.token),
+            fetchUserData(contextToken.token)
         ])
-        .then(([gateRes, areaRes, authRes, settRes, attRes]) => {
-            if(gateRes.status===200 && areaRes.status===200 && authRes.status===200 && settRes.status===200 && attRes.status===200){
-                infoData.set({
-                    gate:gateRes.data,
-                    area:areaRes.data,
-                    authority:authRes.data,
-                    setting:settRes.data,
-                    attribute:attRes.data,
-                });
+        .then(([resInfo, resUser]) => {
+            if(resInfo.status<=401 && resUser.status<=401){
+                setIsError(false);
+                if(resInfo.data.token) contextToken.set(resInfo.data.token);
+                if(resInfo.data.token && resInfo.status>200){
+                    Promise.all([
+                        fetchSettingData(resInfo.data.token),
+                        fetchUserData(resInfo.data.token)
+                    ])
+                    .then(([resInfo, resUser]) => {
+                        setContextData(resInfo, resUser);
+                    })
+                }else{
+                    setContextData(resInfo, resUser);
+                }
+            }else{
+                setIsError(true);
                 setIsLoaded(true);
             }
         })
     }
 
-    const getUserData = () => {
-        customAxios.get("/user/",{
-            headers: {"token": useToken.token}
-        })
-        .then(res => {
-            if(res.status===200){
-                userData.set(res.data);
-            }
+    const setContextData = (resInfo, resUser) => {
+        if(resInfo.status===200 && resInfo.data.ok && resUser.status===200 && resUser.data.ok){
+            const infoData = resInfo.data.data;
+            const userData = resUser.data.data;
+            userData["auth"] = infoData.auth_group[userData.auth_group];
+            infoContextData.set(infoData);
+            userContextData.set(userData);
+        }else{
+            setIsError(true);
+        }
+        setIsLoaded(true);
+    }
+
+    const fetchSettingData = (token) => {
+        return customAxios.get("/setting/",{
+            headers: {"token": token}
         })
     }
 
+    const fetchUserData = (token) => {
+        return customAxios.get("/login/user/",{
+            headers: {"token": token}
+        })
+    }
+
+
     if(!isLoaded) return null;
+    if(isError) return <div>データ取得時にエラーが発生しました。</div>;
 
     return (
-        <infoContext.Provider value={infoData}>
-            <userContext.Provider value={userData}>
+        <infoContext.Provider value={infoContextData}>
+            <userContext.Provider value={userContextData}>
                 {props.children}
             </userContext.Provider>
         </infoContext.Provider>

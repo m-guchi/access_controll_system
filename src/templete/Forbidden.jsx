@@ -5,12 +5,10 @@ import { userContext } from '../context/user';
 
 export default function Forbidden (props) {
 
-    const userData = useContext(userContext)
-    const isLoading = userData.data.user_id===null;
-    const isForbidden = isLoading || !userData.data.authority.includes(props.authority)
+    const contextUser = useContext(userContext)
+    const isForbidden = !contextUser.data.authority.includes(props.authority)
 
     return(
-        isLoading ? null :
         isForbidden ?
             <div>
                 <Typography variant="h5" color="error">403 Forbidden</Typography>

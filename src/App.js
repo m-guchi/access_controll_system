@@ -8,11 +8,11 @@ import SetContext from './context/SetContext';
 
 function App() {
 
-    const token = useToken();
+    const tokenContextData = useToken();
 
     return (
         <div className="App">
-            <tokenContext.Provider value={token}>
+            <tokenContext.Provider value={tokenContextData}>
                 <Auth>
                     <SetContext>
                         <Routing/>
