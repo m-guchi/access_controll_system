@@ -20,7 +20,7 @@ export default function UsersTable (props) {
 
     const row = (!props.gateData || !props.usersData) ? [] : props.usersData.map(val => {
         val["id"] = val["user_id"];
-        val["place_list"] = !val["place"] ? null : val["place"].map(item => {
+        val["place_list"] = !val["gate_id_list"] ? null : val["gate_id_list"].map(item => {
             return props.gateData[item].gate_name;
         }).join(" / ")
         return val;

@@ -46,7 +46,7 @@ export default function QrScanPlaceSelect (props) {
                 </Select>
             )
         }else{
-            return props.user.place.map(val => {
+            return props.user.gate_id_list.map(val => {
                 if(props.gateList[val].ticket_flag && !isTicketReception) return null;
                 return(
                     <Button

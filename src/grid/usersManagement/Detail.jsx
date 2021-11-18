@@ -85,13 +85,13 @@ export default function UsersDetail (props) {
                 if(res.data.info && res.data.info.token){
                     placeAxios(method, gate_id, res.data.info.token)
                 }else if(method==="post"){
-                    let gateIdArray = userData.place.concat();
+                    let gateIdArray = userData.gate_id_list.concat();
                     gateIdArray.push(gate_id)
                     props.setSelectUserData({...userData, place:gateIdArray});
                     setErrorMsg(null);
                 }
             }else if(method==="delete" && res.status===204){
-                const gateIdArray = userData.place.filter(v => v !== gate_id);
+                const gateIdArray = userData.gate_id_list.filter(v => v !== gate_id);
                 props.setSelectUserData({...userData, place:gateIdArray});
                 setErrorMsg(null);
             }else{
@@ -186,7 +186,7 @@ export default function UsersDetail (props) {
                     />
                     <UsersDetailSelectMultiItem
                         name="使用場所"
-                        value={userData.place}
+                        value={userData.gate_id_list}
                         gateList={props.gateData}
                         postItem={handlePostItem}
                         deleteItem={handleDeleteItem}
