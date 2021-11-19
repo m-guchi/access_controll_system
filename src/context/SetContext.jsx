@@ -59,7 +59,7 @@ export default function SetContext (props) {
         if(resInfo.status===200 && resInfo.data.ok && resUser.status===200 && resUser.data.ok){
             const infoData = resInfo.data.data;
             const userData = resUser.data.data;
-            userData["auth"] = infoData.auth_group[userData.auth_group];
+            userData["auth"] = (userData.auth_group in infoData.auth_group) ? infoData.auth_group[userData.auth_group] : [];
             infoContextData.set(infoData);
             userContextData.set(userData);
         }else{
