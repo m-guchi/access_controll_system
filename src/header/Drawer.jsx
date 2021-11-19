@@ -49,7 +49,7 @@ export default function HeaderDrawer (props) {
             }}
         >
             <div className={classes.drawerHeader}>
-                <Typography className={classes.drawerText}>{userData.data.user_name}</Typography>
+                <Typography className={classes.drawerText}>{userData.data.login_user_name}</Typography>
                 <IconButton onClick={handleDrawerClose}>
                     <ChevronLeftIcon />
                 </IconButton>
