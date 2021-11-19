@@ -5,11 +5,10 @@ import ReloadButton from '../../atoms/ReloadButton'
 
 
 const columns = [
-    {field: "user_id", headerName: "ユーザーID", width: 100, hide:true},
-    {field: "login_id", headerName: "ログインID", width: 150},
-    {field: "user_name", headerName: "ユーザー名", width: 180},
-    {field: "authority_group", headerName: "権限グループ", width: 150},
-    {field: "place_list", headerName: "使用場所", width: 350},
+    {field: "id", headerName: "ID", width: 100, hide:true},
+    {field: "login_id", headerName: "ログインID", width: 200},
+    {field: "login_user_name", headerName: "表示名", width: 200},
+    {field: "auth_group", headerName: "権限グループ", width: 180},
 ]
 
 export default function UsersTable (props) {
@@ -17,15 +16,20 @@ export default function UsersTable (props) {
     const handleRowSelect = (param) => {
         props.setSelectUserData(param.row);
     }
-
-    const row = (!props.gateData || !props.usersData) ? [] : props.usersData.map(val => {
-        val["id"] = val["user_id"];
+    
+    const row = (!props.userData) ? [] : Object.keys(props.userData).map(index => {
+        const val = props.userData[index];
+        val["id"] = val["login_user_id"];
         val["place_list"] = !val["gate_id_list"] ? null : val["gate_id_list"].map(item => {
-            return props.gateData[item].gate_name;
+            if(item in props.gateData){
+                return props.gateData[item].gate_name;
+            }else{
+                return null;
+            }
         }).join(" / ")
         return val;
     })
-
+    
     return(
         <PaperWrap>
             <DataGrid
@@ -33,6 +37,7 @@ export default function UsersTable (props) {
                 autoHeight
                 rows={row}
                 columns={columns}
+                loading={props.isFetching}
             />
             <ReloadButton onClick={props.getUserListData} />
         </PaperWrap>

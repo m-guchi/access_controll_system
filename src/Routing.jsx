@@ -9,7 +9,7 @@ import VisitorsCountHistoryPage from './page/VisitorsCountHistory';
 import UserListPage from './page/UserList';
 import TicketListPage from './page/TicketList';
 import GateCountPage from './page/GateCount';
-import UserMgmtPage from './page/UserMgmt';
+import LoginUserMgmtPage from './page/LoginUserMgmt';
 import AuthorityManagementPage from './page/AuthorityManagement';
 import SettingGatePage from './page/SettingGate';
 import SettingAreaPage from './page/SettingArea';
@@ -38,7 +38,7 @@ export default function Routing () {
                     <Route path="/gate_count" component={GateCountPage}/>
                     <Route path="/ticket_list" component={TicketListPage}/>
                     <Route path="/user_list" component={UserListPage}/>
-                    <Route path="/user_mgmt" component={UserMgmtPage}/>
+                    <Route path="/user_mgmt" component={LoginUserMgmtPage}/>
                     <Route path="/authority_management" component={AuthorityManagementPage}/>
                     <Route path="/setting_gate" component={SettingGatePage}/>
                     <Route path="/setting_area" component={SettingAreaPage}/>
