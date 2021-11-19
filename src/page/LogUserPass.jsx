@@ -49,7 +49,7 @@ export default function LogUserPassPage (props) {
     if(isError) return null;
 
     return(
-        <Forbidden authority="log_watcher">
+        <Forbidden authority="users_mgmt">
             <ReloadButton onClick={fetchUserPass}/>
             <LogGateTable
                 logData={logData}

@@ -50,7 +50,7 @@ export default function TicketListPage (props) {
 
     if(isError) return null;
     return(
-        <Forbidden authority="log_watcher">
+        <Forbidden authority="users_mgmt">
             <ReloadButton onClick={fetchTicket}/>
             <LogTicketTable
                 logData={logData}

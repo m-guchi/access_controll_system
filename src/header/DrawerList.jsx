@@ -24,7 +24,8 @@ const all = [
 ];
 const userMgmt = [
     {"key":"user_list","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
-    {"key":"ticket_list","text":"チケット一覧","icon":<ConfirmationNumberIcon />},
+    {"key":"ticket_list","text":"チケット管理","icon":<ConfirmationNumberIcon />},
+    {"key":"log_user_pass","text":"受付通過記録","icon":<HowToVoteIcon />},
 ];
 const loginUserMgmt = [
     {"key":"user_mgmt","text":"ログインユーザー","icon":<PeopleAltIcon />},
@@ -34,15 +35,11 @@ const settingMgmt = [
     {"key":"setting_gate","text":"受付設定","icon":<RoomServiceIcon />},
     {"key":"setting_area","text":"エリア設定","icon":<RoomIcon />},
 ]
-const logWatcher = [
-    {"key":"log_user_pass","text":"受付通過ログ","icon":<HowToVoteIcon />},
-]
 
 const authorityList = [
     {"list":userMgmt, "auth":"users_mgmt"},
     {"list":loginUserMgmt, "auth":"login_users_mgmt"},
     {"list":settingMgmt, "auth":"setting_mgmt"},
-    {"list":logWatcher, "auth":"log_watcher"},
 ]
 
 const useStyles = makeStyles((theme) => ({
