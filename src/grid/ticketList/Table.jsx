@@ -14,9 +14,9 @@ function CustomLoadingOverlay() {
 }
 
 const columns = [
-    {field: "time", headerName: "受付時間", "width": 200, type: 'dateTime',},
-    {field: "ticket_id", headerName: "チケットID", "width": 220},
-    {field: "user_id", headerName: "ユーザーID", "width": 220},
+    {field: "time", headerName: "受付(更新)時間", "width": 200, type: 'dateTime',},
+    {field: "id", headerName: "チケットID", "width": 220},
+    {field: "user_id", headerName: "ユーザーID", "width": 220, editable: true},
 ]
 
 export default function LogTicketTable (props) {
@@ -26,8 +26,16 @@ export default function LogTicketTable (props) {
         return val;
     })
 
+    const handleEditCell = (e) => {
+        const ticketId = e.id;
+        const userId = e.value;
+        if(userId===null || userId.length<=32){
+            props.handlePutTicket(ticketId, userId);
+        }
+    }
+
     return(
-        <div style={{ height: '90vh'}}>
+        <div style={{ height: '85vh'}}>
             <DataGrid
                 components={{
                     Toolbar: GridToolbar,
@@ -37,6 +45,7 @@ export default function LogTicketTable (props) {
                 rows={row}
                 columns={columns}
                 rowsPerPageOptions={[100,250,500,1000]}
+                onCellEditCommit={handleEditCell}
             />
         </div>
     )

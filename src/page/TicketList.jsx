@@ -5,6 +5,7 @@ import { customAxios } from '../templete/Axios';
 import Forbidden from '../templete/Forbidden';
 import LogTicketTable from '../grid/ticketList/Table';
 import ReloadButton from '../atoms/ReloadButton';
+import { Typography } from '@material-ui/core';
 
 export default function TicketListPage (props) {
     const contextToken = useContext(tokenContext)
@@ -48,13 +49,45 @@ export default function TicketListPage (props) {
         })
     }
 
+
+    const handlePutTicket = (ticket_id, user_id) => {
+        const data = {
+            ticket_id: ticket_id,
+            user_id: user_id
+        };
+        putTicketData(contextToken.token, data);
+    }
+    const putTicketData = (token, data) => {
+        customAxios.put("/ticket/", data, {
+            headers: {"token": token}
+        })
+        .then(res => {
+            if(res.status<401){
+                if(res.data.token) contextToken.set(res.data.token);
+                if(res.data.ok){
+                    toggleFetching(false);
+                }else if(res.data.error.type==="need_this_token"){
+                    putTicketData(res.data.token, data);
+                }else{
+                    toggleIsError(true);
+                    toggleFetching(false);
+                }
+            }else{
+                toggleIsError(true);
+                toggleFetching(false);
+            }
+        })
+    }
+
     if(isError) return null;
     return(
         <Forbidden authority="users_mgmt">
             <ReloadButton onClick={fetchTicket}/>
+            <Typography variant="body2" color="secondary">ユーザーIDはダブルクリックで変更可能(0-32文字) / 変更が反映されない場合は、更新ボタンを押してください</Typography>
             <LogTicketTable
                 logData={logData}
                 isFetching={isFetching}
+                handlePutTicket={handlePutTicket}
             />
         </Forbidden>
     )
