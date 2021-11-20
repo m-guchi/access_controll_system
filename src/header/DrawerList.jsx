@@ -19,7 +19,7 @@ import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 const all = [
     {"key":"dashboard","text":"ダッシュボード","icon":<DashboardIcon />},
     {"key":"qr_scan","text":"コードスキャン","icon":<CropFreeIcon />},
-    {"key":"visitors_count","text":"会場内人数","icon":<PetsIcon />},
+    {"key":"user_count","text":"会場内人数","icon":<PetsIcon />},
     {"key":"gate_count","text":"受付通過人数","icon":<DirectionsRunIcon />},
 ];
 const userMgmt = [

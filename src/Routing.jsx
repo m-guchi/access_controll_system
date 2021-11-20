@@ -6,7 +6,7 @@ import AlertBar from './atoms/AlertBar';
 import SetContext from './context/SetContext';
 import DashboardPage from './page/Dashboard';
 import QrScanPage from './page/QrScan';
-import VisitorsCountPage from './page/VisitorsCount';
+import UserCountPage from './page/UserCount';
 import VisitorsCountHistoryPage from './page/VisitorsCountHistory';
 import UserListPage from './page/UserList';
 import TicketListPage from './page/TicketList';
@@ -34,7 +34,7 @@ export default function Routing () {
                         <Route exact path="/"/>
                         <Route path="/dashboard" component={DashboardPage}/>
                         <Route path="/qr_scan" component={QrScanPage}/>
-                        <Route path="/visitors_count" component={VisitorsCountPage}/>
+                        <Route path="/user_count" component={UserCountPage}/>
                         <Route path="/visitors_count_history" component={VisitorsCountHistoryPage}/>
                         <Route path="/gate_count" component={GateCountPage}/>
                         <Route path="/ticket_list" component={TicketListPage}/>

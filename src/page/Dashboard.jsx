@@ -2,7 +2,7 @@ import React, { useContext }  from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Grid, Card, CardContent, CardActionArea, Typography } from '@material-ui/core';
 import { userContext } from '../context/user';
-import VisitorsCountPage from './VisitorsCount';
+import UserCountPage from './UserCount';
 
 
 export default function DashboardPage (props) {
@@ -98,7 +98,7 @@ export default function DashboardPage (props) {
             {isIncludeAuthority("visitors_count") &&
                 <Grid item xs={12}>
                     <Card variant="outlined">
-                        <VisitorsCountPage dashboard />
+                        <UserCountPage dashboard />
                     </Card>
                 </Grid>
             }
