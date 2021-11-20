@@ -12,16 +12,16 @@ export default function AuthMgmtPage (props) {
     const contextToken = useContext(tokenContext)
     const contextInfo = useContext(infoContext)
     const contextUser = useContext(userContext)
+    const contextAlertBar = useContext(AlertBarContext)
 
     const [isFetching, setFetching] = useState(false);
-    const [isError, setError] = useState(false);
 
     const updateInfoData = (token) => {
         customAxios.get("/setting/",{
             headers: {"token": token}
         })
         .then(res => {
-            if(res.status<401){
+            if(res.status<=401){
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.ok){
                     contextInfo.set(res.data.data);
@@ -29,10 +29,12 @@ export default function AuthMgmtPage (props) {
                 }else if(res.data.error.type==="need_this_token"){
                     updateInfoData(res.data.token);
                 }else{
-                    setError(true);
+                    contextAlertBar.setOtherError(res.data.error);
+                    setFetching(false);
                 }
             }else{
-                setError(true);
+                contextAlertBar.setOtherError(res.data.error);
+                setFetching(false);
             }
         })
     }
@@ -49,13 +51,13 @@ export default function AuthMgmtPage (props) {
                     fetchInfoData();
                 }else if(res.data.error.type==="need_this_token"){
                     postAuth(data, res.data.token);
-                }else if(res.data.error.type==="not_in_auth_name"){
-                    setError(true);
                 }else{
-                    setError(true);
+                    contextAlertBar.setOtherError(res.data.error);
+                    setFetching(false);
                 }
             }else{
-                setError(true);
+                contextAlertBar.setOtherError(res.data.error);
+                setFetching(false);
             }
         })
     }
@@ -74,12 +76,15 @@ export default function AuthMgmtPage (props) {
                 if(res.data.error.type==="need_this_token"){
                     deleteAuth(data, res.data.token);
                 }else if(res.data.error.type==="cannot_delete_last_auth_group"){
-                    setError(true);
+                    contextAlertBar.setWarning("権限グループ("+data.auth_group+")は少なくとも1つの権限を持つ必要があります。");
+                    setFetching(false);
                 }else{
-                    setError(true);
+                    contextAlertBar.setOtherError(res.data.error);
+                    setFetching(false);
                 }
             }else{
-                setError(true);
+                contextAlertBar.setOtherError(res.data.error);
+                setFetching(false);
             }
         })
     }
@@ -91,7 +96,7 @@ export default function AuthMgmtPage (props) {
 
     const handleChangeAuth = (authName, authGroup, value) => {
         if(authName==="login_users_mgmt" && authGroup===contextUser.data.auth_group){
-            //error
+            contextAlertBar.setWarning("自分の属する権限グループ("+contextUser.data.auth_group+")の「login_users_mgmt」は変更できません。");
             fetchInfoData();
         }else{
             const data = {
