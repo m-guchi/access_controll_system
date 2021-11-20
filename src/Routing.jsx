@@ -9,6 +9,7 @@ import QrScanPage from './page/QrScan';
 import UserCountPage from './page/UserCount';
 import VisitorsCountHistoryPage from './page/VisitorsCountHistory';
 import UserListPage from './page/UserList';
+import UserSearchPage from './page/UserSearch';
 import TicketListPage from './page/TicketList';
 import GateCountPage from './page/GateCount';
 import LoginUserMgmtPage from './page/LoginUserMgmt';
@@ -37,13 +38,14 @@ export default function Routing () {
                         <Route path="/user_count" component={UserCountPage}/>
                         <Route path="/visitors_count_history" component={VisitorsCountHistoryPage}/>
                         <Route path="/gate_count" component={GateCountPage}/>
-                        <Route path="/ticket_list" component={TicketListPage}/>
                         <Route path="/user_list" component={UserListPage}/>
+                        <Route path="/user_search" component={UserSearchPage}/>
+                        <Route path="/ticket_list" component={TicketListPage}/>
+                        <Route path="/log_user_pass" component={LogUserPassPage}/>
                         <Route path="/user_mgmt" component={LoginUserMgmtPage}/>
                         <Route path="/auth_mgmt" component={AuthMgmtPage}/>
                         <Route path="/setting_gate" component={SettingGatePage}/>
                         <Route path="/setting_area" component={SettingAreaPage}/>
-                        <Route path="/log_user_pass" component={LogUserPassPage}/>
                     </article>
                     <AlertBar/>
                 </Header>

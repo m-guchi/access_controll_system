@@ -14,16 +14,16 @@ import RoomIcon from '@material-ui/icons/Room';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
 import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
-import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import SearchIcon from '@material-ui/icons/Search';
 
 const all = [
     {"key":"dashboard","text":"ダッシュボード","icon":<DashboardIcon />},
     {"key":"qr_scan","text":"コードスキャン","icon":<CropFreeIcon />},
     {"key":"user_count","text":"会場内人数","icon":<PetsIcon />},
-    {"key":"gate_count","text":"受付通過人数","icon":<DirectionsRunIcon />},
 ];
 const userMgmt = [
     {"key":"user_list","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
+    {"key":"user_search","text":"ユーザー検索","icon":<SearchIcon />},
     {"key":"ticket_list","text":"チケット管理","icon":<ConfirmationNumberIcon />},
     {"key":"log_user_pass","text":"受付通過記録","icon":<HowToVoteIcon />},
 ];
