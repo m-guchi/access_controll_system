@@ -45,7 +45,7 @@ export default function AuthMgmtPage (props) {
             headers: {"token": token}
         })
         .then(res => {
-            if(res.status<401){
+            if(res.status<=401){
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.ok){
                     fetchInfoData();
@@ -71,7 +71,7 @@ export default function AuthMgmtPage (props) {
         .then(res => {
             if(res.status===204){
                 fetchInfoData();
-            }else if(res.status<401){
+            }else if(res.status<=401){
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.error.type==="need_this_token"){
                     deleteAuth(data, res.data.token);
