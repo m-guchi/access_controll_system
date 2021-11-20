@@ -37,7 +37,6 @@ export default function AuthTable (props) {
     })
 
     const handleEditCell = (e) => {
-        console.log(e)
         const authName = e.id;
         const authGroup = e.field;
         const value = e.value;
