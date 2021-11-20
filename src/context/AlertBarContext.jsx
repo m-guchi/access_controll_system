@@ -9,6 +9,7 @@ const dataFormat = {
 export const AlertBarContext = createContext({
     data: dataFormat,
     set: () => {},
+    setError: () => {},
     setWarning: () => {},
     setOtherError: () => {},
 });
@@ -23,12 +24,11 @@ const useAlertBar = () => {
         }
         setData(data)
     },[]);
+    const setError = useCallback((message) => {
+        set(true,"error",message);
+    })
     const setWarning = useCallback((message) => {
-        setData({
-            isOpen:true,
-            type:"warning",
-            message:message
-        })
+        set(true,"warning",message);
     },[]);
     const setOtherError = useCallback((errorData) => {
         setData({
@@ -37,7 +37,7 @@ const useAlertBar = () => {
             message:"エラーが発生しました。もう一度操作を行ってください。同じエラーが発生する場合は、一度ログアウトすると解決する場合があります。(errorType="+errorData.type+", errorMsg="+errorData.msg+")"
         })
     },[]);
-    return {data, set, setWarning, setOtherError}
+    return {data, set, setError, setWarning, setOtherError}
 }
 
 export const AlertBarProvider = (props) => {
