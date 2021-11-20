@@ -2,10 +2,8 @@ import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Table, TableHead, TableCell, TableRow, TableBody } from '@material-ui/core';
 import { infoContext } from '../../context/info';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import ReloadButton from '../../atoms/ReloadButton';
 import PaperWrap from '../../templete/Paper';
-import classNames from 'classnames';
 
 const useStyles = makeStyles((theme) => ({
     red: {
