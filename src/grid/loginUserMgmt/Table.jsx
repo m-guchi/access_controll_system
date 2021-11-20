@@ -17,21 +17,15 @@ export default function UsersTable (props) {
         props.setSelectUserData(param.row);
     }
     
-    const row = (!props.userData) ? [] : Object.keys(props.userData).map(index => {
-        const val = props.userData[index];
+    const row = (!props.loginUserData) ? [] : Object.keys(props.loginUserData).map(index => {
+        const val = props.loginUserData[index];
         val["id"] = val["login_user_id"];
-        val["place_list"] = !val["gate_id_list"] ? null : val["gate_id_list"].map(item => {
-            if(item in props.gateData){
-                return props.gateData[item].gate_name;
-            }else{
-                return null;
-            }
-        }).join(" / ")
         return val;
     })
     
     return(
         <PaperWrap>
+            <ReloadButton onClick={props.handleGetLoginUser} />
             <DataGrid
                 onRowClick={handleRowSelect}
                 autoHeight
@@ -39,7 +33,6 @@ export default function UsersTable (props) {
                 columns={columns}
                 loading={props.isFetching}
             />
-            <ReloadButton onClick={props.getUserListData} />
         </PaperWrap>
     )
 }

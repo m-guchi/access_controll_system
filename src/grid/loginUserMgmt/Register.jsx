@@ -1,17 +1,15 @@
 import React, { useState, useContext } from 'react'
 import { TextField, Typography, Button, Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
-import { tokenContext } from '../../context/token';
 import { infoContext } from '../../context/info';
+import { AlertBarContext } from '../../context/AlertBarContext';
+import { checkTextNullOrSpace } from '../../atoms/checkText';
 import PaperWrap from '../../templete/Paper';
-import { customAxios } from '../../templete/Axios';
 import FormBox from '../../templete/FormBox';
 
 
-export default function UsersRegister () {
-    const contextToken = useContext(tokenContext)
+export default function UsersRegister (props) {
     const contextInfo = useContext(infoContext)
-
-    const [registerMsg, setRegisterMsg] = useState("");
+    const contextAlertBar = useContext(AlertBarContext)
 
     const [loginId, setLoginId] = useState(null);
     const [userName, setUserName] = useState(null);
@@ -26,14 +24,12 @@ export default function UsersRegister () {
     const handlePassword = (e) => setPassword(e.target.value);
     const handleAuth = (e) => setAuth(e.target.value);
 
-    const handleRegisterUser = () => registerUser(contextToken.token)
-    const registerUser = (token) => {
-        setRegisterMsg("");
+    const handleRegisterUser = () => {
         setErrorStatus(errorDefaultData);
         let errorFlg = false;
         let errorMsg = "";
         let errStatus = errorDefaultData;
-        if(loginId===null || loginId.length<1){
+        if(checkTextNullOrSpace(loginId)){
             errorMsg += "ログインIDを入力してください。";
             errStatus.loginId = true;
             errorFlg = true;
@@ -42,7 +38,7 @@ export default function UsersRegister () {
             errStatus.loginId = true;
             errorFlg = true;
         }
-        if(userName===null || userName.length<1){
+        if(checkTextNullOrSpace(userName)){
             errorMsg += "表示名を入力してください。";
             errStatus.userName = true;
             errorFlg = true;
@@ -51,7 +47,7 @@ export default function UsersRegister () {
             errStatus.userName = true;
             errorFlg = true;
         }
-        if(password===null || password.length<1){
+        if(checkTextNullOrSpace(password)){
             errorMsg += "パスワードを入力してください。";
             errStatus.password = true;
             errorFlg = true;
@@ -61,50 +57,14 @@ export default function UsersRegister () {
             errorFlg = true;
         }
         if(errorFlg){
-            setRegisterMsg(errorMsg);
+            contextAlertBar.setWarning(errorMsg);
             setErrorStatus(errStatus);
         }else{
-            customAxios({
-                method: "post",
-                url: "/login/user/",
-                data: {
-                    login_id: loginId,
-                    login_user_name: userName,
-                    password: password,
-                    auth_group: auth
-                },
-                headers: {"token": token}
-            })
-            .then(res => {
-                if(res.status<401){
-                    if(res.data.token) contextToken.set(res.data.token);
-                    if(res.data.ok){
-                        setRegisterMsg("登録しました")
-                    }else{
-                        switch(res.data.error.type){
-                            case "need_this_token":
-                                registerUser(res.data.token);
-                                break;
-                            case "invalid_param_length":
-                                setRegisterMsg("入力データの文字数が不適です");
-                                break;
-                            case "already_login_id":
-                                setRegisterMsg("このログインIDは既に使用されています");
-                                errStatus.loginId = true;
-                                break;
-                            case "not_in_authority_group":
-                                setRegisterMsg("この権限グループは存在しません");
-                                errStatus.auth = true;
-                                break;
-                            default:
-                                setRegisterMsg("エラーが発生しました。再度登録を行ってください。");
-                                break;
-                        }
-                        setErrorStatus(errStatus);
-                    }
-                }else{
-                    setRegisterMsg("エラーが発生しました。再度登録を行ってください。");
-                }
+            props.handlePostLoginUser({
+                login_id: loginId,
+                login_user_name: userName,
+                password: password,
+                auth_group: auth,
             })
         }
     }
@@ -151,9 +111,6 @@ export default function UsersRegister () {
                             })}
                         </Select>
                     </FormControl>
-                </div>
-                <div>
-                    <Typography color="error" variant="body2">{registerMsg}</Typography>
                 </div>
                 <div>
                     <Button variant="contained" color="primary" onClick={handleRegisterUser} >登録</Button>
