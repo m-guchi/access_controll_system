@@ -76,7 +76,7 @@ export default function AuthMgmtPage (props) {
                 if(res.data.error.type==="need_this_token"){
                     deleteAuth(data, res.data.token);
                 }else if(res.data.error.type==="cannot_delete_last_auth_group"){
-                    contextAlertBar.setWarning("権限グループ("+data.auth_group+")は少なくとも1つの権限を持つ必要があります。");
+                    contextAlertBar.setWarning("権限グループ( "+data.auth_group+" )は少なくとも1つの権限を持つ必要があります。");
                     setFetching(false);
                 }else{
                     contextAlertBar.setOtherError(res.data.error);
@@ -96,7 +96,7 @@ export default function AuthMgmtPage (props) {
 
     const handleChangeAuth = (authName, authGroup, value) => {
         if(authName==="login_users_mgmt" && authGroup===contextUser.data.auth_group){
-            contextAlertBar.setWarning("自分の属する権限グループ("+contextUser.data.auth_group+")の「login_users_mgmt」は変更できません。");
+            contextAlertBar.setWarning("自分の属する権限グループ( "+contextUser.data.auth_group+" )の「login_users_mgmt」は変更できません。");
             fetchInfoData();
         }else{
             const data = {
