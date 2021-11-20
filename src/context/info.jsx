@@ -1,12 +1,12 @@
 import { useState, createContext, useCallback } from 'react'
 
 const dataFormat = {
-    area: [],
-    gate: [],
-    setting: [],
-    auth_list: [],
-    auth_group: [],
-    attribute: [],
+    area: [], //area_id:{}
+    gate: [], //gate_id:{}
+    setting: [], //id:{id,value,description}
+    auth_list: [], //{auth_name:description}
+    auth_group: [], //auth_group:[auth_name]
+    attribute: [], //attribute_id:{}
 };
 
 export const infoContext = createContext({
