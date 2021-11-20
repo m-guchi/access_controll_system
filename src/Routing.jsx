@@ -28,8 +28,8 @@ export default function Routing () {
 
     return(
         <Router basename={process.env.REACT_APP_BASE_URL}>
-            <Header>
-                <SetContext>
+            <SetContext>
+                <Header>
                     <article className={classes.main}>
                         <Route exact path="/"/>
                         <Route path="/dashboard" component={DashboardPage}/>
@@ -46,8 +46,8 @@ export default function Routing () {
                         <Route path="/log_user_pass" component={LogUserPassPage}/>
                     </article>
                     <AlertBar/>
-                </SetContext>
-            </Header>
+                </Header>
+            </SetContext>
         </Router>
     )
 }
