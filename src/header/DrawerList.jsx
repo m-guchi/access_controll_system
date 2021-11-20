@@ -29,7 +29,7 @@ const userMgmt = [
 ];
 const loginUserMgmt = [
     {"key":"user_mgmt","text":"ログインユーザー","icon":<PeopleAltIcon />},
-    {"key":"authority_management","text":"権限グループ","icon":<FingerprintIcon />},
+    {"key":"auth_mgmt","text":"権限グループ","icon":<FingerprintIcon />},
 ];
 const settingMgmt = [
     {"key":"setting_gate","text":"受付設定","icon":<RoomServiceIcon />},
