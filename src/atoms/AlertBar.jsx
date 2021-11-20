@@ -9,19 +9,19 @@ function Alert(props) {
 }
 
 export default function AlertBar (props) {
-    const { snackState, toggleSnack } = useContext(AlertBarContext);
+    const contextAlertBar = useContext(AlertBarContext);
 
     const handleClose = (e,res) => {
         if(res==="clickaway"){
             return;
         }
-        toggleSnack(false, snackState.type, "");
+        contextAlertBar.set(false, contextAlertBar.data.type, "");
     }
 
     return(
-        <Snackbar open={snackState.isOpen} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity={snackState.type}>
-                {snackState.message}
+        <Snackbar open={contextAlertBar.data.isOpen} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={contextAlertBar.data.type}>
+                {contextAlertBar.data.message}
             </Alert>
         </Snackbar>
     )
