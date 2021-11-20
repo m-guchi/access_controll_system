@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 export default function HeaderDrawer (props) {
     const classes = useStyles();
 
-    const userData = useContext(userContext);
+    const contextUser = useContext(userContext);
 
     const handleDrawerClose = () => {
         props.toggleOpen(false);
@@ -49,7 +49,7 @@ export default function HeaderDrawer (props) {
             }}
         >
             <div className={classes.drawerHeader}>
-                <Typography className={classes.drawerText}>{userData.data.login_user_name}</Typography>
+                <Typography className={classes.drawerText}>{contextUser.data.login_user_name}</Typography>
                 <IconButton onClick={handleDrawerClose}>
                     <ChevronLeftIcon />
                 </IconButton>
