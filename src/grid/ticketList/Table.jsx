@@ -29,9 +29,7 @@ export default function LogTicketTable (props) {
     const handleEditCell = (e) => {
         const ticketId = e.id;
         const userId = e.value;
-        if(userId===null || userId.length<=32){
-            props.handlePutTicket(ticketId, userId);
-        }
+        props.handlePutTicket(ticketId, userId);
     }
 
     return(
