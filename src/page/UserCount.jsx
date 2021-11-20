@@ -12,7 +12,6 @@ export default function UserCountPage (props) {
     const contextAlertBar = useContext(AlertBarContext)
 
     const [userCount, setUserCount] = useState(null);
-    const [isFetching, toggleFetching] = useState(true);
 
     useEffect(() => {
         handleGetUserCount();
@@ -28,16 +27,13 @@ export default function UserCountPage (props) {
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.ok){
                     setUserCount(res.data.data);
-                    toggleFetching(false);
                 }else if(res.data.error.type==="need_this_token"){
                     getUserCount(res.data.token);
                 }else{
                     contextAlertBar.setOtherError(res.data.error);
-                    toggleFetching(false);
                 }
             }else{
                 contextAlertBar.setOtherError(res.data.error);
-                toggleFetching(false);
             }
         })
     }

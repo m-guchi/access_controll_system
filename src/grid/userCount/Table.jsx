@@ -36,9 +36,9 @@ export default function CountTable (props) {
                     if(Boolean(Number(areaData.hide))) return null;
                     const rate = ((count.total/areaData.capacity)*100).toFixed(3);
                     let rowClass = "";
-                    if(rate>=100){
+                    if(rate >= Number(contextInfo.data.setting.user_count_red_rate.value)){
                         rowClass = classes.red;
-                    }else if(rate>=80){
+                    }else if(rate >= Number(contextInfo.data.setting.user_count_yellow_rate.value)){
                         rowClass = classes.yellow;
                     }
                     return (
