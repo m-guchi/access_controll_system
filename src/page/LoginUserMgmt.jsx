@@ -11,7 +11,6 @@ import UsersDetail from '../grid/loginUserMgmt/Detail';
 
 export default function LoginUserMgmtPage (props) {
     const contextToken = useContext(tokenContext)
-    const contextInfo = useContext(infoContext)
     const contextAlertBar = useContext(AlertBarContext)
 
     const [userData, setUserData] = useState(null)
