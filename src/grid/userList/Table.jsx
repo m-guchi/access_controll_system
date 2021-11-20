@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, IconButton } from '@material-ui/core';
 import { DataGrid, GridToolbar } from '@material-ui/data-grid';
-import PaperWrap from '../../templete/Paper';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -104,7 +103,7 @@ export default function VisitorsTable (props) {
     })
 
     return(
-        <PaperWrap>
+        <div style={{ height: '90vh'}}>
             <DataGrid
                 components={{
                     Toolbar: QuickSearchToolbar,
@@ -116,12 +115,11 @@ export default function VisitorsTable (props) {
                         clearSearch: ()=>requestSearch(''),
                     },
                 }}
-                autoHeight
                 loading={props.isFetching}
                 rows={row}
                 columns={columns}
                 rowsPerPageOptions={[100,250,500,1000]}
             />
-        </PaperWrap>
+        </div>
     )
 }
