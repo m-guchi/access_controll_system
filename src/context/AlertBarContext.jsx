@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 
-export const SnackbarContext = createContext();
+export const AlertBarContext = createContext();
 
 export const AlertBarProvider = (props) => {
     const [ snackState, setSnackState ] = useState({
@@ -18,8 +18,8 @@ export const AlertBarProvider = (props) => {
     };
 
     return (
-        <SnackbarContext.Provider value={{snackState, toggleSnack:toggleSnack}}>
+        <AlertBarContext.Provider value={{snackState, toggleSnack:toggleSnack}}>
             {props.children}
-        </SnackbarContext.Provider>
+        </AlertBarContext.Provider>
     )
 };
