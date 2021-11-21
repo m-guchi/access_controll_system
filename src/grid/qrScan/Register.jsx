@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function QrScanRegister (props) {
+export default function RegisterTextField (props) {
     const classes = useStyles();
 
     const useInfo = useContext(infoContext);
@@ -43,7 +43,7 @@ export default function QrScanRegister (props) {
     const inputTextArray = [];
 
     const handleKeyDown = useCallback((e) => {
-        if(!props.useGateData || !props.useGateData.id) return;
+        if(!props.selectedGateId) return;
         const key = e.key;
         if(["Process"].includes(key)){
             setErrorMsg("全角文字は使用できません");
@@ -75,14 +75,14 @@ export default function QrScanRegister (props) {
                 }
             }
         }
-    },[props.useGateData]);
+    },[props.selectedGateId]);
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown, false);
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
-    }, [props.useGateData, handleKeyDown]);
+    }, [props.selectedGateId, handleKeyDown]);
 
     const removeFocus = () => {
         yoyakuElement.current.blur();
@@ -98,7 +98,7 @@ export default function QrScanRegister (props) {
         ticketElement.current.focus();
     }
     const keyDownEnter = () => {
-        console.log(props.useGateData)
+        console.log(props.selectedGateId)
         const ticket = ticketElement.current.value;
         const yoyaku = yoyakuElement.current.value;
         if(ticket.length===0 || (yoyaku.length===0 && Boolean(props.useGateData.ticket))){
@@ -142,7 +142,7 @@ export default function QrScanRegister (props) {
         resetInputError();
     }
 
-    if(!props.useGateData || !props.useGateData.id) return null
+    if(!props.selectedGateId) return null
     return(
         <PaperWrap>
             <FormBox>

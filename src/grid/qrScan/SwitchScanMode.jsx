@@ -12,9 +12,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SwitchScanMode (props) {
     const classes = useStyles();
-    const nextDevice = !(props.isDevice==="sm")?"sm":"pc";
+
+    const handleChangeDevice = () => {
+        props.toggleDeviceSm(!props.isDeviceSm)
+    }
     
-    if(!props.isDevice) return null;
     return(
         <PaperWrap>
             <Typography variant="body2">
@@ -22,11 +24,11 @@ export default function SwitchScanMode (props) {
                     <Grid item>PC<br />(外付けリーダー)</Grid>
                     <Grid item>
                         <Switch
-                            checked={Boolean(props.isDevice==="sm")}
-                            onChange={()=>props.toggleDevice(nextDevice)}
+                            checked={Boolean(props.isDeviceSm)}
+                            onChange={handleChangeDevice}
                         />
                     </Grid>
-                    <Grid item>スマホ<br />(内部カメラ)</Grid>
+                    <Grid item>スマホ<br />(カメラ)</Grid>
                 </Grid>
             </Typography>
         </PaperWrap>

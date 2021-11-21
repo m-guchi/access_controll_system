@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ReactLoading from 'react-loading';
 import QrReader from 'react-qr-reader'
+import { AlertBarContext } from '../../context/AlertBarContext';
 import PaperWrap from '../../templete/Paper';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,26 +22,29 @@ const useStyles = makeStyles((theme) => ({
  
 export default function Scan (props) {
     const classes = useStyles();
+
+    const contextAlertBar = useContext(AlertBarContext)
     
     const handleError = err => {
-        console.error(err)
+        console.log(err)
+        contextAlertBar.setError("カメラを起動できません。ブラウザにカメラへのアクセスを許可してください。")
     }
 
     return (
     <PaperWrap>
-        {props.canUseScan ?
-        <QrReader
-            delay={700}
-            onError={handleError}
-            onScan={props.handleScan}
-            style={{ width: '100%' }}
-        />
+        {props.isAbleScan ?
+            <QrReader
+                delay={700}
+                onError={handleError}
+                onScan={props.handleScan}
+                style={{ width: '100%' }}
+            />
         :
-        <div className={classes.box} >
-            <div className={classes.content}>
-                <ReactLoading type="spin" height="50%" width="50%" color="#3f51b5" className={classes.animation}/>
+            <div className={classes.box} >
+                <div className={classes.content}>
+                    <ReactLoading type="spin" height="50%" width="50%" color="#3f51b5" className={classes.animation}/>
+                </div>
             </div>
-        </div>
         }
     </PaperWrap>
     )
