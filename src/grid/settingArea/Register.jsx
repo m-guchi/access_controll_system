@@ -23,7 +23,7 @@ export default function Register (props) {
     const handleCapacity= (e) => setCapacity(e.target.value);
     const handleHide = () => setHide(!hide)
 
-    const handleRegisterUser = () => {
+    const handleRegisterArea = () => {
         setErrorStatus(errorDefaultData);
         let errorFlg = false;
         let errorMsg = "";
@@ -113,7 +113,7 @@ export default function Register (props) {
                     />
                 </div>
                 <div>
-                    <Button variant="contained" color="primary" onClick={handleRegisterUser} >登録</Button>
+                    <Button variant="contained" color="primary" onClick={handleRegisterArea} >登録</Button>
                 </div>
             </FormBox>
         </PaperWrap>
