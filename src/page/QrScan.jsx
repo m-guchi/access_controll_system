@@ -77,7 +77,7 @@ export default function QrScanPage (props) {
     //ticketであるか判定
     const checkTicketId = useCallback((text) => {
         const setting = contextInfo.data.setting;
-        const ticketPrefix = setting.ticket_prefix.value.split(',');
+        const ticketPrefix = setting.ticket_prefix.value ? setting.ticket_prefix.value.split(',') : [];
         return (Boolean(Number(setting.use_ticket.value)) && ticketPrefix.length>0 && ticketPrefix.some((val) => text.indexOf(val)===0))
     },[contextInfo]);
     //属性の判定
