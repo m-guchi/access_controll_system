@@ -1,5 +1,5 @@
 import React, { useState, useContext }  from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid ,Typography } from '@material-ui/core';
 import { tokenContext } from '../context/token';
 import { infoContext } from '../context/info';
 import { AlertBarContext } from '../context/AlertBarContext';
@@ -100,7 +100,7 @@ export default function SettingAreaPage (props) {
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.ok){
                     setAreaData(res.data.data.area)
-                    contextInfo.set(res.data.data.area);
+                    contextInfo.set(res.data.data);
                     toggleFetching(false);
                 }else if(res.data.error.type==="need_this_token"){
                     getInfoData(res.data.token);
@@ -123,6 +123,7 @@ export default function SettingAreaPage (props) {
             <Grid container>
                 <Grid item xs={12}>
                     <ReloadButton onClick={fetchInfoData}/>
+                    <Typography variant="body2" color="secondary">ダブルクリックで更新可能(エリア名/定員/表示)</Typography>
                     <AreaTable
                         areaData={areaData}
                         isFetching={isFetching}

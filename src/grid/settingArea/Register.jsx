@@ -67,7 +67,7 @@ export default function Register (props) {
 
     return(
         <PaperWrap>
-            <Typography variant='h6'>新規エリア登録</Typography>
+            <Typography variant='h6'>エリア登録/更新</Typography>
             <Typography variant='body2' color="error">既に存在するIDを指定した場合、そのIDの情報が更新されます。</Typography>
             <FormBox>
                 <div>
