@@ -15,6 +15,8 @@ import RoomServiceIcon from '@material-ui/icons/RoomService';
 import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import SearchIcon from '@material-ui/icons/Search';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 
 const all = [
     {"key":"dashboard","text":"ダッシュボード","icon":<DashboardIcon />},
@@ -23,9 +25,11 @@ const all = [
 ];
 const userMgmt = [
     {"key":"user_list","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
+    //delete user, change area, jump passdata
     {"key":"user_search","text":"ユーザー検索","icon":<SearchIcon />},
-    {"key":"ticket_list","text":"チケット管理","icon":<ConfirmationNumberIcon />},
     {"key":"log_user_pass","text":"受付通過記録","icon":<HowToVoteIcon />},
+    {"key":"ticket_list","text":"チケット管理","icon":<ConfirmationNumberIcon />},
+    //delete ticket
 ];
 const loginUserMgmt = [
     {"key":"user_mgmt","text":"ログインユーザー","icon":<PeopleAltIcon />},
@@ -34,6 +38,9 @@ const loginUserMgmt = [
 const settingMgmt = [
     {"key":"setting_gate","text":"受付設定","icon":<RoomServiceIcon />},
     {"key":"setting_area","text":"エリア設定","icon":<RoomIcon />},
+    {"key":"setting","text":"各種設定","icon":<SettingsIcon />},
+    {"key":"delete_data","text":"データ消去","icon":<DeleteSweepIcon />},
+    //token, user_old, user_pass
 ]
 
 const authorityList = [
