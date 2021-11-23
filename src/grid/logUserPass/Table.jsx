@@ -83,11 +83,14 @@ const columns = [
 ]
 
 export default function LogGateTable (props) {
-    const [searchText, setSearchText] = useState(null);
+    const [searchText, setSearchText] = useState("");
     const [rows, setRows] = useState(props.logData);
 
     useEffect(() => {
         setRows(props.logData)
+        if(props.defaultUserId!=null){
+            requestSearch(props.defaultUserId)
+        }
     },[props.logData])
 
     const requestSearch = (searchValue) => {

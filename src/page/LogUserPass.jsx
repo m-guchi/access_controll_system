@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext }  from 'react';
+import { useLocation } from 'react-router-dom'
 import { tokenContext } from '../context/token';
 import { infoContext } from '../context/info';
 import { customAxios } from '../templete/Axios';
@@ -14,6 +15,8 @@ export default function LogUserPassPage (props) {
 
     const [logData, setLogdata] = useState(null);
     const [isFetching, toggleFetching] = useState(true);
+
+    const urlQuery = new URLSearchParams(useLocation().search);
 
     useEffect(() => {
         fetchUserPass()
@@ -54,6 +57,7 @@ export default function LogUserPassPage (props) {
                 logData={logData}
                 areaData={contextInfo.data.area}
                 isFetching={isFetching}
+                defaultUserId={urlQuery.get("user_id")}
             />
         </Forbidden>
     )
