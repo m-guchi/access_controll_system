@@ -36,7 +36,7 @@ export default function QrScanPlaceSelect (props) {
             >
                 {contextInfo.data.gate && Object.keys(contextInfo.data.gate).map((index) => {
                     const item = contextInfo.data.gate[index];
-                    if(contextInfo.data.setting.use_ticket.value==0 && Boolean(Number(item.can_make_ticket))) return null;
+                    if(!Boolean(Number(contextInfo.data.setting.use_ticket.value)) && Boolean(Number(item.can_make_ticket))) return null;
                     return(
                         <MenuItem
                             key={index}

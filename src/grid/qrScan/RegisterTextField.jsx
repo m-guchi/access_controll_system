@@ -1,65 +1,72 @@
 import React, { useState, useEffect, useRef, useContext, useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { infoContext } from '../../context/info';
+import { AlertBarContext } from '../../context/AlertBarContext';
 import { TextField, Button, Typography } from '@material-ui/core';
 import PaperWrap from '../../templete/Paper';
 import FormBox from '../../templete/FormBox';
-import SendIcon from '@material-ui/icons/Send';
 
 export default function RegisterTextField (props) {
 
-    const contextInfo = useContext(infoContext)
+    const contextInfo = useContext(infoContext);
+    const contextAlertBar = useContext(AlertBarContext);
+
 
     const userElement = useRef(null);
     const ticketElement = useRef(null);
 
-    const selectGateData = contextInfo.data.gate[props.selectedGateId];
+    const isUseTicketMode = Boolean(Number(contextInfo.data.setting.use_ticket.value))
 
-    const handleSetUserId = (e) => props.setTextBox(false, e.target.value);
-    const handleSetTicketId = (e) => props.setTextBox(true, e.target.value);
+    const [selectTextType, setSelectTextType] = useState(null); //[null,hide,user,ticket]
+
+
+    const handleSetUserId = (e) => {
+        if(e.target.value.length>30){
+            contextAlertBar.setWarning("ユーザーIDは31文字以上入力できません")
+        }else{
+            props.setTextBox(false, e.target.value, false);
+        }
+        setSelectTextType(e.target.value.length===0?null:"user")
+    }
+    const handleSetTicketId = (e) => {
+        if(e.target.value.length>30){
+            contextAlertBar.setWarning("チケットIDは31文字以上入力できません")
+        }else{
+            props.setTextBox(true, e.target.value, false);
+        }
+        setSelectTextType(e.target.value.length===0?null:"ticket")
+    }
 
     const [inputTextString, setInputTextSrtring] = useState("");
 
     const handleKeyDown = (e) => {
         const key = e.key;
-        if(["Process"].includes(key)){
-            // setErrorMsg("全角文字は使用できません");
-        }else{
-            // setErrorMsg(null);
-        }
-        if(["Escape"," "].includes(key)){
-            setInputTextSrtring("")
+        if(["Escape","Esc"].includes(key)){
+            setInputTextSrtring("");
+            setSelectTextType(null);
             removeFocus();
-        }else if(key==="Enter"){ //Enter
-            if(props.checkTicketId(inputTextString)){
-                console.log("ticket")
-                props.setTextBox(true, inputTextString)
-            }else{
-                console.log("user")
-                props.setTextBox(false, inputTextString)
+        }else if(key==="Enter"){
+            if(selectTextType==="hide"){
+                if(props.checkTicketId(inputTextString)){
+                    props.setTextBox(true, inputTextString, true)
+                }else{
+                    props.setTextBox(false, inputTextString, true)
+                }
+            }else if(selectTextType!==null){
+                props.onClickEnter()
             }
-            setInputTextSrtring("")
-            // keyDownEnter();
+            setInputTextSrtring("");
+            setSelectTextType(null);
             removeFocus();
-        }else if(["Backspace","Delete","Shift","Tab","Process","Zenkaku"].includes(key)){
+        }else if(key.length>1){
         }else{
+            setSelectTextType("hide");
             const text = inputTextString+key;
-            setInputTextSrtring(text);
-            // inputTextArray.push(key);
-            // if(prefixStringArr.includes(key)){ //予約ID
-            //     const inputTextString = inputTextArray.join("");
-            //     const isYoyakuMatch = prefixArr.some((val) => inputTextString===val)
-            //     if(isYoyakuMatch){
-            //         keyDownYoyaku(inputTextString);
-            //     }
-            // }
-            // if(ticketPrefixStringArr.includes(key)){ //入場券QRコード
-            //     const inputTextString = inputTextArray.join("");
-            //     const isTicketMatch = ticketPrefixArr.some((val) => inputTextString===val)
-            //     if(isTicketMatch){
-            //         keyDownTicket(inputTextString);
-            //     }
-            // }
+            if(text.length<=30){
+                setInputTextSrtring(text);
+            }else{
+                contextAlertBar.setWarning("31文字以上入力できません")
+            }
         }
     };
 
@@ -72,14 +79,26 @@ export default function RegisterTextField (props) {
 
     const removeFocus = () => {
         userElement.current.blur();
-        ticketElement.current.blur();
+        if(isUseTicketMode) ticketElement.current.blur();
     }
 
 
+    const textStringIsNotInput = (inputTextString==="");
+    const textTypeField = props.isSending ? "データ送信中" 
+            : selectTextType==="ticket" ? "チケットID入力中"
+            : selectTextType==="user" ? "ユーザーID入力中"
+            : textStringIsNotInput||selectTextType===null ? "入力待ち"
+            : inputTextString;
+    const textTypeColor = textTypeField==="データ送信中" ? "secondary"
+            : textTypeField==="入力待ち" ? "primary"
+            : "default";
     
     return(
         <PaperWrap>
             <FormBox>
+                <div>
+                    <Typography variant="body1" color={textTypeColor}>{textTypeField}</Typography>
+                </div>
                 <div>
                     <TextField
                         inputRef={userElement}
@@ -89,25 +108,29 @@ export default function RegisterTextField (props) {
                           }}
                         variant="outlined"
                         size="small"
-                        inputProps={{ maxLength: contextInfo.data.setting.user_id_max_length }}
+                        inputProps={{ maxLength: 31 }}
                         onChange={handleSetUserId}
                         value={props.inputTextValue.userId}
+                        disabled={props.isSending}
                     />
                 </div>
-                <div>
-                    <TextField
-                        inputRef={ticketElement}
-                        label="チケットID"
-                        InputLabelProps={{
-                            shrink: true,
-                          }}
-                        variant="outlined"
-                        size="small"
-                        inputProps={{ maxLength: contextInfo.data.setting.ticket_id_max_length }}
-                        onChange={handleSetTicketId}
-                        value={props.inputTextValue.ticketId}
-                    />
-                </div>
+                {isUseTicketMode &&
+                    <div>
+                        <TextField
+                            inputRef={ticketElement}
+                            label="チケットID"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="outlined"
+                            size="small"
+                            inputProps={{ maxLength: 31 }}
+                            onChange={handleSetTicketId}
+                            value={props.inputTextValue.ticketId}
+                            disabled={props.isSending}
+                        />
+                    </div>
+                }
             </FormBox>
         </PaperWrap>
     )

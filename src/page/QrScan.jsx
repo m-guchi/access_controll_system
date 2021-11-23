@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useContext }  from 'react';
+import React, { useState, useEffect, useContext, useCallback }  from 'react';
 import { Grid } from '@material-ui/core';
 import { tokenContext } from '../context/token';
-import { userContext } from '../context/user';
 import { infoContext } from '../context/info';
+import { AlertBarContext } from '../context/AlertBarContext';
 import QrScanPlaceSelect from '../grid/qrScan/PlaceSelect'
 import RegisterTextField from '../grid/qrScan/RegisterTextField'
-import VisitorHistoryTable from '../grid/qrScan/Table'
-import VisitorDetail from '../grid/qrScan/Detail'
+import UserHistoryTable from '../grid/qrScan/Table'
 import Scan from '../grid/qrScan/Scan'
 import SwitchScanMode from '../grid/qrScan/SwitchScanMode'
 import Forbidden from '../templete/Forbidden';
@@ -15,348 +14,213 @@ import { isMobile } from "react-device-detect";
 
 
 export default function QrScanPage (props) {
-    // const useToken = useContext(tokenContext)
-    // const useUser = useContext(userContext);
+    const contextToken = useContext(tokenContext)
     const contextInfo = useContext(infoContext);
+    const contextAlertBar = useContext(AlertBarContext);
 
     const [isDeviceSm, toggleDeviceSm] = useState(false);
-    const [isAbleScan, toggleAbleScan] = useState(true);
     const [isSending, toggleSending] = useState(false);
-    // const [qrDataInTicket, setQrDataInTicket] = useState({yoyakuId:"", ticketId:""});
-    // const [useGateData, setUseGateData] = useState({id:null, ticket:false});
-    // const [isGateWhenTicket, toggleGateWhenTicket] = useState(true);
-    // const [postVisitorData, setPostVisitorData] = useState(null);
-    // const [visitorHistory, setVisitorHistory] = useState(null);
-    // const [errorText, setErrorText] = useState(null);
-    
-    // const token = useToken.token;
-    // const nextScanTime = useInfo.setting.qrcode_nextscan_wait_time_in_sm * 1000;
-    // const canVisitorsHistory = useUser.data ? useUser.data.authority.includes("visitors_history") : false
-    // const canVisitorsHistory = true
-
-    // const resetQrDataInTicket = () => {
-    //     setQrDataInTicket({yoyakuId:"", ticketId:""});
-    // }
 
     useEffect(() => {
         toggleDeviceSm(isMobile)
     },[])
 
-    //prefixの一覧配列
-    // let prefixArr = [];
-    // Object.keys(useInfo.attribute).forEach((index) => {
-    //     const val = useInfo.attribute[index];
-    //     prefixArr = prefixArr.concat(val.prefix);
-    // })
-    // prefixArr.sort();
-
-    // const ticketPrefixArr = useInfo.setting.ticket_prefix.split(',');
-
-    //スマホで読み込んだ直後の処理
-    // const handleScan = (data) => {
-    //     if(data && canUseScan){
-    //         const isYoyakuMatch = prefixArr.some((val) => data.indexOf(val)===0);
-    //         const isTicketMatch = ticketPrefixArr.some((val) => data.indexOf(val)===0)
-    //         if(useGateData.ticket && isYoyakuMatch){ //予約IDが入力された
-    //             toggleCanUseScan(false)
-    //             if(qrDataInTicket.ticketId){ //入場券ID入力されていない
-    //                 setQrDataInTicket({yoyakuId:data, ticketId:""})
-    //                 setTimeout(() => {
-    //                     toggleCanUseScan(true)
-    //                 }, nextScanTime);
-    //             }else{ //入場券ID入力されている→登録
-    //                 const submitData = {...qrDataInTicket, yoyakuId:data};
-    //                 submitData(submitData);
-    //                 setQrDataInTicket(submitData);
-    //                 setTimeout(() => {
-    //                     resetQrDataInTicket();
-    //                     toggleCanUseScan(true);
-    //                 }, nextScanTime);
-    //             }
-    //         }else if(isTicketMatch){ //入場券IDが入力された
-    //             toggleCanUseScan(false)
-    //             if(!useGateData.ticket){ //発券所ではない(入場券IDのみ)
-    //                 const submitData = {yoyakuId:"", ticketId:data};
-    //                 submitData(submitData)
-    //                 setQrDataInTicket(submitData)
-    //                 setTimeout(() => {
-    //                     resetQrDataInTicket();
-    //                     toggleCanUseScan(true);
-    //                 }, nextScanTime);
-    //             }else{
-    //                 if(!qrDataInTicket.yoyakuId){ //予約ID入力されていない
-    //                     setQrDataInTicket({yoyakuId:"", ticketId:data})
-    //                     setTimeout(() => {
-    //                         toggleCanUseScan(true)
-    //                     }, nextScanTime);
-    //                 }else{ //予約ID入力されている→登録
-    //                     const submitData = {...qrDataInTicket, ticketId:data};
-    //                     submitData(submitData)
-    //                     setQrDataInTicket(submitData)
-    //                     setTimeout(() => {
-    //                         resetQrDataInTicket();
-    //                         toggleCanUseScan(true);
-    //                     }, nextScanTime);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-    
-    //受付情報更新
-    // const handleGateId = (gateId) => {
-    //     setUseGateData({
-    //         id: gateId,
-    //         ticket: Boolean(useInfo.gate[gateId].ticket_flag)
-    //     })
-    // }
-
-    //データ登録
-    // const submitData = (inputData) => {
-    //     const nowDateInst = new Date();
-    //     const nowDate = nowDateInst.toLocaleString();
-    //     const gateData = {
-    //         ticket_id: inputData.ticketId,
-    //         gate_id: useGateData.id,
-    //         user_id: useUser.data.user_id,
-    //         pass_time: nowDate,
-    //     }
-    //     const ticketData = {
-    //         ticket_id: inputData.ticketId,
-    //         yoyaku_id: inputData.yoyakuId,
-    //     }
-        
-    //     toggleSending(true)
-    //     setPostVisitorData(null)
-    //     setErrorText(null)
-    //     setVisitorHistory(null)
-    //     if(useGateData.ticket){
-    //         postTicketProgress(ticketData, gateData, token);
-    //         toggleSending(false)
-    //     }else{
-    //         postGateProgress(gateData, token);
-    //         toggleSending(false)
-    //     }
-    // }
-
-    //発券所におけるデータ送信
-    // const postTicketProgress = (ticketData, gateData, token) => {
-    //     postTicketData(ticketData, token)
-    //     .then(res => {
-    //         if(isGateWhenTicket){ //通過情報も登録
-    //             postGateProgress(gateData, token); //受付と同じ処理
-    //         }else{
-    //             getVisitorHistoryData(ticketData.yoyaku_id, token);
-    //         }
-    //     })
-    //     .catch(res => {
-    //         if(res.status===400 && res.data.error.type==="already_ticket_id"){
-    //             setErrorText("この入場券は既に使用されています。別の入場券を使用してください。")
-    //         }else{
-    //             setErrorText("入場券データ送信時にエラーが発生しました。解決しない場合は一度ログアウトして再度ログインしてください。[ERR=QR156]")
-    //         }
-    //         toggleSending(false)
-    //     })
-    // }
-
-    //発券情報を登録
-    // const postTicketData = (data, token) => {
-    //     return new Promise((resolve,reject) => {
-    //         customAxios({
-    //             method: "post",
-    //             url: "/visitor/ticket/",
-    //             data: data,
-    //             headers: {"token": token}
-    //         })
-    //         .then(res => {
-    //             if(res.status===200){
-    //                 if(res.data.info && res.data.info.token){
-    //                     const token = res.data.info.token;
-    //                     useToken.set(token)
-    //                     postTicketData(data, token)
-    //                     .then(res => resolve(res))
-    //                     .catch(res => reject(res))
-    //                 }else{
-    //                     resolve(res);
-    //                 }
-    //             }else{
-    //                 reject(res)
-    //             }
-    //         })
-    //     })
-    // }
-
-    //受付におけるデータ送信
-    // const postGateProgress = (gateData, token) => {
-    //     getVisiorData(gateData.ticket_id, token)
-    //     .then(yoyakuId => {
-    //         const visitorData = {
-    //             yoyaku_id: yoyakuId,
-    //             gate_id: gateData.gate_id,
-    //             time: gateData.pass_time,
-    //         }
-    //         postGataData(gateData, visitorData, token);
-    //     })
-    //     .catch(res => {
-    //         if(res.status===400 && res.data.error.type==="not_in_ticket_id"){
-    //             setErrorText("この入場券は登録されていません。")
-    //         }else{
-    //             setErrorText("来場者データ取得時にエラーが発生しました。解決しない場合は一度ログアウトして再度ログインしてください。[ERR=QR201]")
-    //         }
-    //         toggleSending(false)
-    //     })
-    // }
-
-    //来場者情報を取得
-    // const getVisiorData = (ticketId, token) => {
-    //     return new Promise((resolve,reject) => {
-    //         customAxios.get("/visitor/ticket/?ticket_id="+ticketId,{
-    //             headers: {"token": token}
-    //         })
-    //         .then(res => {
-    //             if(res.status===200){
-    //                 if(res.data.info && res.data.info.token){
-    //                     const token = res.data.info.token;
-    //                     useToken.set(token)
-    //                     getVisiorData(ticketId, token)
-    //                     .then(res => resolve(res))
-    //                     .catch(res => reject(res))
-    //                 }else{
-    //                     resolve(res.data.yoyaku_id);
-    //                 }
-    //             }else{
-    //                 reject(res)
-    //             }
-    //         })
-    //     })
-    // }
-
-    //通過情報を登録
-    // const postGataData = (gateData, visitorData, token) => {
-    //     Promise.all([
-    //         customAxios({
-    //             method: "post",
-    //             url: "/gate/",
-    //             data: gateData,
-    //             headers: {"token": token}
-    //         }),
-    //         customAxios({
-    //             method: "put",
-    //             url: "/visitor/",
-    //             data: visitorData,
-    //             headers: {"token": token}
-    //         })
-    //     ])
-    //     .then(([gateRes, visitorRes]) => {
-    //         if(gateRes.status===200 && visitorRes.status===200){
-    //             if(gateRes.data.info && gateRes.data.info.token){
-    //                 const token = gateRes.data.info.token;
-    //                 useToken.set(token)
-    //                 postGataData(gateData, visitorData, token)
-    //             }else if(visitorRes.data.info && visitorRes.data.info.token){
-    //                 const token = visitorRes.data.info.token;
-    //                 useToken.set(token)
-    //                 postGataData(gateData, visitorData, token)
-    //             }else{
-    //                 getVisitorHistoryData(visitorData.yoyaku_id, token)
-    //                 toggleSending(false)
-    //                 setErrorText(null)
-    //             }
-    //         }else{
-    //             setErrorText("通過データ送信時にエラーが発生しました。解決しない場合は一度ログアウトして再度ログインしてください。[ERR=QR256]")
-    //             toggleSending(false)
-    //         }
-    //     })
-    // }
-
-    //来場者の通過履歴取得
-    // const getVisitorHistoryData = (yoyakuId, token) => {
-    //     if(!canVisitorsHistory){ //ログインユーザーが履歴閲覧可能か
-    //         customAxios.get("/visitor/?yoyaku_id="+yoyakuId,{
-    //             headers: {"token": token}
-    //         })
-    //         .then(res => {
-    //             if(res.status===200){
-    //                 if(res.data.info && res.data.info.token){
-    //                     const token = res.data.info.token;
-    //                     useToken.set(token)
-    //                     getVisitorHistoryData(yoyakuId, token)
-    //                 }else{
-    //                     setPostVisitorData(res.data)
-    //                 }
-    //             }else{
-    //                 setErrorText("履歴取得時にエラーが発生しました。")
-    //                 setVisitorHistory(null);
-    //             }
-    //         })
-    //     }else{
-    //         Promise.all([
-    //             customAxios.get("/gate/?yoyaku_id="+yoyakuId,{
-    //                 headers: {"token": token}
-    //             }),
-    //             customAxios.get("/visitor/?yoyaku_id="+yoyakuId,{
-    //                 headers: {"token": token}
-    //             })
-    //         ])
-    //         .then(([gateRes, visitorRes]) => {
-    //             if(gateRes.status===200 && visitorRes.status===200){
-    //                 if(gateRes.data.info && gateRes.data.info.token){
-    //                     const token = gateRes.data.info.token;
-    //                     useToken.set(token)
-    //                     getVisitorHistoryData(yoyakuId, token)
-    //                 }else if(visitorRes.data.info && visitorRes.data.info.token){
-    //                     const token = visitorRes.data.info.token;
-    //                     useToken.set(token)
-    //                     getVisitorHistoryData(yoyakuId, token)
-    //                 }else{
-    //                     setVisitorHistory(gateRes.data);
-    //                     setPostVisitorData(visitorRes.data)
-    //                 }
-    //             }else{
-    //                 setErrorText("履歴取得時にエラーが発生しました")
-    //                 setVisitorHistory(null);
-    //             }
-    //         })
-    //     }
-    // }
-
-    // if(!isDevice) return null
-
-
     const [selectedGateId, setSelectGateId] = useState(null);
+    const handleSelectGateId = (gateId) => {
+        resetTextBox();
+        setSelectGateId(gateId);
+    }
 
-    const [selectTextBox, setSelectTextBox] = useState(null); //[null,user,ticket]
     const [textUserId, setTextUserId] = useState("");
     const [textTicketId, setTextTicketId] = useState("");
 
+    const selectGateData = contextInfo.data.gate[selectedGateId];
+    const isUseTicketMode = Boolean(Number(contextInfo.data.setting.use_ticket.value));
+
+    //入力BOXに制御
     const inputTextValue = {
         userId: textUserId,
         ticketId: textTicketId,
     };
-    const setTextBox = (isTicketId, text) => {
+    const setTextBox = (isTicketId, text, isEnter) => {
         if(isTicketId){
             setTextTicketId(text)
         }else{
             setTextUserId(text)
         }
+        if(isEnter){
+            const decideData = isTicketId ? {
+                ...inputTextValue, 
+                ticketId: text,
+            } : {
+                ...inputTextValue,
+                userId: text,
+            }
+            handleDecideData(decideData);
+        }
     };
+    const resetTextBox = () => {
+        setTextUserId("");
+        setTextTicketId("");
+    }
 
+    //カメラで読み込んだ直後の処理
     const handleScan = (data) => {
         if(data===null){
             return;
         }
+        toggleSending(true);
         const isTicketPrefix = checkTicketId(data);
-        setSelectTextBox(isTicketPrefix?"ticket":"user");
-        setTextBox(isTicketPrefix,data);
+        setTextBox(isTicketPrefix,data,true);
     }
 
-    const checkTicketId = (text) => {
+    //ticketであるか判定
+    const checkTicketId = useCallback((text) => {
         const setting = contextInfo.data.setting;
         const ticketPrefix = setting.ticket_prefix.value.split(',');
-        return (setting.use_ticket.value!=0 && ticketPrefix.length>0 && ticketPrefix.some((val) => text.indexOf(val)===0))
+        return (Boolean(Number(setting.use_ticket.value)) && ticketPrefix.length>0 && ticketPrefix.some((val) => text.indexOf(val)===0))
+    },[contextInfo]);
+    //属性の判定
+    const checkAttribute = useCallback((text) => {
+        if(text==="") return null;
+        const attributeList = contextInfo.data.attribute;
+        let decideAttributeData = {
+            id: null,
+            length: 0,
+        }
+        Object.keys(attributeList).forEach(attributeId => {
+            const prefixList = attributeList[attributeId].prefix;
+            if(prefixList){
+                prefixList.forEach(prefix => {
+                    if(text.indexOf(prefix)===0){
+                        if(decideAttributeData.length < prefix.length){
+                            decideAttributeData.id = attributeId;
+                            decideAttributeData.length = prefix.length;
+                        }
+                    }
+                })
+            } 
+        })
+        return decideAttributeData.id;
+    },[contextInfo]);
+
+    //データを送信する
+    const handleDecideData = (data) => {
+        const submitDataBody = {
+            user_id: data.userId,
+            ticket_id: data.ticketId,
+            gate_id: selectedGateId,
+            attribute_id: checkAttribute(data.userId),
+        }
+        if(!isUseTicketMode || !Boolean(Number(selectGateData.can_make_ticket))){
+            submitData(submitDataBody);
+        }else{
+            if(data.userId!=="" && data.ticketId!==""){
+                submitDataWithTicket(submitDataBody);
+            }else{
+                toggleSending(false);
+            }
+        }
+    }
+    const submitData = (data) => {
+        toggleSending(true);
+        putUserPass(data, contextToken.token);
+    }
+    const submitDataWithTicket = (data) => {
+        toggleSending(true);
+        putTicket(data, contextToken.token);
+    }
+    const putTicket = (data, token) => {
+        customAxios.put("/ticket/", data, {
+            headers: {"token": token}
+        })
+        .then(res => {
+            console.log(res)
+            if(res.status<=401){
+                if(res.data.token) contextToken.set(res.data.token);
+                if(res.data.ok){
+                    const successMsg = "チケットID( "+data.ticket_id+" )をユーザーIDに紐付けしました。"
+                    putUserPass(data, token, successMsg);
+                }else{
+                    if(res.data.error.type==="need_this_token"){
+                        putTicket(data, res.data.token);
+                    }else{
+                        contextAlertBar.setOtherError(res.data.error);
+                        toggleSending(false);
+                    }
+                }
+            }else{
+                contextAlertBar.setOtherError(res.data.error);
+                toggleSending(false);
+            }
+        })
+    }
+    const putUserPass = (data, token, successMsg="") => {
+        customAxios.put("/user/", data, {
+            headers: {"token": token}
+        })
+        .then(res => {
+            if(res.status<=401){
+                if(res.data.token) contextToken.set(res.data.token);
+                if(res.data.ok){
+                    contextAlertBar.setSuccess(successMsg+"ユーザーID( "+res.data.data.user_id+" )の通過情報を登録しました")
+                    getUserPass(res.data.data.user_id, token)
+                }else{
+                    if(res.data.error.type==="need_this_token"){
+                        putUserPass(data, res.data.token, successMsg);
+                    }else{
+                        switch(res.data.error.type){
+                            case "not_in_ticket_id":
+                                contextAlertBar.setWarning("このチケットID( "+data.ticket_id+" )は登録されていません")
+                                break;
+                            case "not_in_gate_id":
+                                contextAlertBar.setError("この受付( gate_id="+data.gate_id+" )は登録されていません。ページをリロードして再度操作を行ってください。")
+                                break;
+                            default:
+                                contextAlertBar.setOtherError(res.data.error);
+                                break;
+                            }
+                        toggleSending(false);
+                        resetTextBox();
+                    }
+                }
+            }else{
+                contextAlertBar.setOtherError(res.data.error);
+                toggleSending(false);
+            }
+        })
+    }
+    const [userPass, setUserPass] = useState([]);
+    const getUserPass = (userId, token) => {
+        customAxios.get("/user/pass/?user_id="+userId, {
+            headers: {"token": token}
+        })
+        .then(res => {
+            if(res.status<=401){
+                if(res.data.token) contextToken.set(res.data.token);
+                if(res.data.ok){
+                    setUserPass(res.data.data.pass);
+                    toggleSending(false);
+                    resetTextBox();
+                }else{
+                    if(res.data.error.type==="need_this_token"){
+                        getUserPass(userId, res.data.token);
+                    }else{
+                        contextAlertBar.setOtherError(res.data.error);
+                        toggleSending(false);
+                        resetTextBox();
+                    }
+                }
+            }else{
+                contextAlertBar.setOtherError(res.data.error);
+                toggleSending(false);
+            }
+        })
     }
 
-    // const 
+    const onClickEnter = () => {
+        handleDecideData(inputTextValue);
+    }
 
     return(
         <Forbidden authority="record_user_pass">
@@ -364,12 +228,12 @@ export default function QrScanPage (props) {
                 <Grid item lg={4} sm={6} xs={12}>
                     <QrScanPlaceSelect
                         selectedGateId={selectedGateId}
-                        setSelectGateId={setSelectGateId}
+                        setSelectGateId={handleSelectGateId}
                     />
                     { (isDeviceSm && selectedGateId) &&
                         <Scan
                             handleScan={handleScan}
-                            isAbleScan={isAbleScan}
+                            isAbleScan={!isSending}
                         />
                     }
                     {selectedGateId &&
@@ -380,32 +244,15 @@ export default function QrScanPage (props) {
                             isDeviceSm={isDeviceSm}
                             setTextBox={setTextBox}
                             checkTicketId={checkTicketId}
+                            onClickEnter={onClickEnter}
                         />
                     }
-                    {/* <RegisterTextField
-                        submitData={submitData}
-                        useGateData={useGateData}
-                        isSending={isSending}
-                        errorText={errorText}
-                        setErrorText={setErrorText}
-                        qrDataInTicket={qrDataInTicket}
-                        prefixArr={prefixArr}
-                        isSm={Boolean(isDevice==="sm")}
-                    /> */}
-                    {/* <VisitorDetail
-                        errorText={errorText}
-                        postVisitorData={postVisitorData}
-                        canVisitorsHistory={canVisitorsHistory}
-                    /> */}
                 </Grid>
-                {/* {canVisitorsHistory &&
                 <Grid item lg={8} sm={6} xs={12}>
-                    <VisitorHistoryTable
-                        visitorHistory={visitorHistory}
-                        areaList={useInfo.area}
+                    <UserHistoryTable
+                        userPass={userPass}
                     />
                 </Grid>
-                } */}
                 <Grid item lg={4} sm={6} xs={12}>
                     <SwitchScanMode
                         isDeviceSm={isDeviceSm}
