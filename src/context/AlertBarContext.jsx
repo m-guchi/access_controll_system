@@ -38,7 +38,7 @@ const useAlertBar = () => {
         setData({
             isOpen:true,
             type:"error",
-            message:"エラーが発生しました。もう一度操作を行ってください。同じエラーが発生する場合は、一度ログアウトすると解決する場合があります。(errorType="+errorData.type+", errorMsg="+errorData.msg+")"
+            message:"エラーが発生しました。再度操作を行ってください。同じエラーが発生する場合は、一度ログアウトすると解決する場合があります。(errorType="+errorData.type+", errorMsg="+errorData.msg+")"
         })
     },[]);
     return {data, set, setError, setWarning, setSuccess, setOtherError}
