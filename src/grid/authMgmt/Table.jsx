@@ -25,7 +25,7 @@ export default function AuthTable (props) {
     ]
 
     Object.keys(contextInfo.data.auth_group).forEach(val => {
-        columns.push({field:val, headerName:val, width: 120, type: "boolean", editable: true })
+        columns.push({field:val, headerName:val, width: 130, type: "boolean", editable: true })
     })
 
     const row = contextInfo.data.auth_list.map(val => {
