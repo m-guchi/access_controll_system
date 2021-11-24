@@ -64,7 +64,6 @@ export default function Table (props) {
     const contextInfo= useContext(infoContext);
 
     const handleCommitCell = (e) => {
-        console.log(e)
         if(e.field==="can_make_ticket_dis"){
             putGateData({
                 gate_id: e.id,
