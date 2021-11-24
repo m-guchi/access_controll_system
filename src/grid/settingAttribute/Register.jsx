@@ -56,7 +56,7 @@ export default function Register (props) {
 
     return(
         <PaperWrap>
-            <Typography variant='h6'>受付登録/更新</Typography>
+            <Typography variant='h6'>属性登録/更新</Typography>
             <Typography variant='body2' color="error">既に存在するIDを指定した場合、そのIDの情報が更新されます。</Typography>
             <FormBox>
                 <div>
