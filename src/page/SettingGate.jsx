@@ -41,6 +41,12 @@ export default function SettingGatePage (props) {
                     toggleFetching(false);
                 }else if(res.data.error.type==="need_this_token"){
                     putGateData(res.data.token, data);
+                }else if(res.data.error.type==="not_out_area_id"){
+                    contextAlertBar.setWarning("この前エリアIDは登録されていません");
+                    toggleFetching(false);
+                }else if(res.data.error.type==="not_in_area_id"){
+                    contextAlertBar.setWarning("この次エリアIDは登録されていません");
+                    toggleFetching(false);
                 }else{
                     contextAlertBar.setOtherError(res.data.error);
                     toggleFetching(false);
