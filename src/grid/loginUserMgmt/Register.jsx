@@ -14,11 +14,7 @@ export default function UsersRegister (props) {
     const [loginId, setLoginId] = useState(null);
     const [userName, setUserName] = useState(null);
     const [password, setPassword] = useState(null);
-    const [auth, setAuth] = useState(null);
-
-    useEffect(() => {
-        setAuth(Object.keys(contextInfo.data.auth_group)[0])
-    },[contextInfo])
+    const [auth, setAuth] = useState("default");
 
     const errorDefaultData = {loginId: false,userName: false,password:false,auth:false};
     const [errorStatus, setErrorStatus] = useState(errorDefaultData);
