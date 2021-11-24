@@ -125,6 +125,8 @@ export default function Table (props) {
                 rows={row}
                 columns={columns}
                 onCellEditCommit={handleCommitCell}
+                rowsPerPageOptions={[]}
+                hideFooterSelectedRowCount
             />
         </div>
     )

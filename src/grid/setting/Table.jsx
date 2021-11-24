@@ -47,6 +47,7 @@ export default function Table (props) {
                 rows={row}
                 columns={columns}
                 onCellEditCommit={handleCommitCell}
+                hideFooter
             />
         </div>
     )

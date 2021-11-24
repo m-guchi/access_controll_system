@@ -152,6 +152,8 @@ export default function AreaTable (props) {
                 columns={columns}
                 onCellEditStart={handleEditCell}
                 onCellEditCommit={handleCommitCell}
+                rowsPerPageOptions={[]}
+                hideFooterSelectedRowCount
             />
         </div>
     )
