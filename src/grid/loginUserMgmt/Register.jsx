@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { TextField, Typography, Button, Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
 import { infoContext } from '../../context/info';
 import { AlertBarContext } from '../../context/AlertBarContext';
@@ -14,7 +14,11 @@ export default function UsersRegister (props) {
     const [loginId, setLoginId] = useState(null);
     const [userName, setUserName] = useState(null);
     const [password, setPassword] = useState(null);
-    const [auth, setAuth] = useState("default");
+    const [auth, setAuth] = useState(null);
+
+    useEffect(() => {
+        setAuth(Object.keys(contextInfo.data.auth_group)[0])
+    },[contextInfo])
 
     const errorDefaultData = {loginId: false,userName: false,password:false,auth:false};
     const [errorStatus, setErrorStatus] = useState(errorDefaultData);
@@ -99,22 +103,20 @@ export default function UsersRegister (props) {
                 </div>
                 <div>
                     <FormControl variant="outlined" fullWidth>
-                        <InputLabel id="select_auth">権限グループ</InputLabel>
+                        <InputLabel id="select_auth" shrink>権限グループ</InputLabel>
                         <Select
                             value={auth}
                             onChange={handleAuth}
                             labelId="select_auth"
                             error={errorStatus.auth}
+                            
                         >
                             {contextInfo.data.auth_list && Object.keys(contextInfo.data.auth_group).map((item,index) => {
                                 return <MenuItem key={index} value={item}>{item}</MenuItem>
                             })}
                         </Select>
                     </FormControl>
-                </div>
-                <div>
-                    <Button variant="contained" color="primary" onClick={handleRegisterUser} >登録</Button>
-                </div>
+           </div>
             </FormBox>
         </PaperWrap>
     )
