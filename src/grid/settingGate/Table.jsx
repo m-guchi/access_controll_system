@@ -47,12 +47,11 @@ export default function Table (props) {
         {field: "in_area_name", headerName: "次エリア名", width: 160},
         {field: "can_make_ticket_dis", headerName: "紐付け", width: 120, type:"boolean", editable: true, description:"チケットとユーザーIDを紐付け可能(チケットを使用しない場合は✕にする)"},
         {field: "delete", headerName: "削除", width: 120, renderCell: (params) => {
-            setDeleteGateId(params.id)
             return(
                 <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={hancleDeleteButton}
+                    onClick={()=>hancleDeleteButton(params.id)}
                 >
                     削除
                 </Button>
@@ -69,6 +68,8 @@ export default function Table (props) {
                 gate_id: e.id,
                 can_make_ticket: e.value
             })
+        }else if((e.field==="gate_name" && (e.value.length<=0 || e.value.length>50))){
+            contextAlertBar.setWarning("受付名は1文字以上50文字以下で入力してください")
         }else{
             putGateData({
                 gate_id: e.id,
@@ -83,7 +84,10 @@ export default function Table (props) {
 
     const [confirmDeleteOpen, toggleConfirmDeleteOpen] = useState(false);
     const handleConfirmDeleteClose = () => toggleConfirmDeleteOpen(false);
-    const hancleDeleteButton = () => toggleConfirmDeleteOpen(true);
+    const hancleDeleteButton = (gateId) => {
+        setDeleteGateId(gateId)
+        toggleConfirmDeleteOpen(true);
+    }
     const handleConfirmDeleteButton = () => {
         props.handleDeleteGateData(deleteGateId);
         setDeleteGateId(null);

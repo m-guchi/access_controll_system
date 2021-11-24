@@ -45,12 +45,11 @@ export default function AreaTable (props) {
         {field: "hide_dis", headerName: "表示", width: 120, type:"boolean", editable: true ,description:"会場内人数などのグラフに表示するか"},
         // {field: "color", headerName: "グラフ色", width: 170, editable: true},
         {field: "delete", headerName: "削除", width: 120, renderCell: (params) => {
-            setDeleteAreaId(params.id)
             return(
                 <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={hancleDeleteButton}
+                    onClick={()=>hancleDeleteButton(params.id)}
                 >
                     削除
                 </Button>
@@ -91,6 +90,8 @@ export default function AreaTable (props) {
         }else if(e.field!=="color"){
             if(e.field==="capacity" && (e.value<0 || e.value>1000000)){
                 contextAlertBar.setWarning("定員は0以上1,000,000以下の値を入力してください")
+            }else if(e.field==="area_name" && (e.value.length<=0 || e.value.length>50)){
+                contextAlertBar.setWarning("エリア名は1文字以上50文字以下で入力してください")
             }else{
                 putAreaData({
                     area_id: e.id,
@@ -106,7 +107,10 @@ export default function AreaTable (props) {
 
     const [confirmDeleteOpen, toggleConfirmDeleteOpen] = useState(false);
     const handleConfirmDeleteClose = () => toggleConfirmDeleteOpen(false);
-    const hancleDeleteButton = () => toggleConfirmDeleteOpen(true);
+    const hancleDeleteButton = (areaId) => {
+        setDeleteAreaId(areaId)
+        toggleConfirmDeleteOpen(true);
+    }
     const handleConfirmDeleteButton = () => {
         props.handleDeleteAreaData(deleteAreaId);
         setDeleteAreaId(null);
