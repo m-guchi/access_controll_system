@@ -16,6 +16,7 @@ import LoginUserMgmtPage from './page/LoginUserMgmt';
 import AuthMgmtPage from './page/AuthMgmt';
 import SettingGatePage from './page/SettingGate';
 import SettingAreaPage from './page/SettingArea';
+import SettingAttributePage from './page/SettingAttribute';
 import LogUserPassPage from './page/LogUserPass';
 import SettingPage from './page/Setting';
 
@@ -47,6 +48,7 @@ export default function Routing () {
                         <Route path="/auth_mgmt" component={AuthMgmtPage}/>
                         <Route path="/setting_gate" component={SettingGatePage}/>
                         <Route path="/setting_area" component={SettingAreaPage}/>
+                        <Route path="/setting_attribute" component={SettingAttributePage}/>
                         <Route path="/setting" component={SettingPage}/>
                     </article>
                     <AlertBar/>
