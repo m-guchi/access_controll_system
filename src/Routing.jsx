@@ -19,6 +19,7 @@ import SettingAreaPage from './page/SettingArea';
 import SettingAttributePage from './page/SettingAttribute';
 import LogUserPassPage from './page/LogUserPass';
 import SettingPage from './page/Setting';
+import DeleteDataPage from './page/DeleteData';
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -50,6 +51,7 @@ export default function Routing () {
                         <Route path="/setting_area" component={SettingAreaPage}/>
                         <Route path="/setting_attribute" component={SettingAttributePage}/>
                         <Route path="/setting" component={SettingPage}/>
+                        <Route path="/delete_data" component={DeleteDataPage}/>
                     </article>
                     <AlertBar/>
                 </Header>
