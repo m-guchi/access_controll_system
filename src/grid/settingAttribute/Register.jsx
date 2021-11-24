@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import { TextField, Typography, Button, FormControlLabel, Checkbox,  Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
 import { infoContext } from '../../context/info';
 import { AlertBarContext } from '../../context/AlertBarContext';
 import { checkTextNullOrSpace } from '../../atoms/checkText';
 import PaperWrap from '../../templete/Paper';
 import FormBox from '../../templete/FormBox';
+import ColorPicker from "react-pick-color";
 
 
 export default function Register (props) {
@@ -13,12 +14,16 @@ export default function Register (props) {
 
     const [attributeId, setAttributeId] = useState(null);
     const [attributeName, setAttributeName] = useState(null);
+    const [color, setColor] = useState('#000000');
 
     const errorDefaultData = {id: false,name: false};
     const [errorStatus, setErrorStatus] = useState(errorDefaultData);
 
     const handleId = (e) => setAttributeId(e.target.value);
     const handleName = (e) => setAttributeName(e.target.value);
+    const handleColor = useCallback((color) => {
+        setColor(color.hex)
+    },[]);
 
     const handleRegisterAttribute = () => {
         setErrorStatus(errorDefaultData);
@@ -50,6 +55,7 @@ export default function Register (props) {
             props.handleAttributeData({
                 attribute_id: attributeId,
                 attribute_name: attributeName,
+                color: color,
             })
         }
     }
@@ -83,7 +89,14 @@ export default function Register (props) {
                         fullWidth
                     />
                 </div>
-                <Typography color="secondary" variant="body2">属性は登録後に上のテーブルから該当するIDのプレフィックスをダブルクリックして追加してください。</Typography>
+                <div>
+                    <Typography variant="caption" color="textSecondary" align="left" display="block">グラフ色(会場内人数)</Typography>
+                    <ColorPicker
+                        color={color}
+                        onChange={handleColor}
+                    />
+                </div>
+                    <Typography color="secondary" variant="body2">属性は登録後に上のテーブルから該当するIDのプレフィックスをダブルクリックして追加してください。</Typography>
                 <div>
                     <Button variant="contained" color="primary" onClick={handleRegisterAttribute} >登録</Button>
                 </div>

@@ -5,6 +5,8 @@ import { DataGrid, GridOverlay } from '@material-ui/data-grid';
 import { infoContext } from '../../context/info';
 import { AlertBarContext } from '../../context/AlertBarContext';
 import PrefixBox from './PrefixBox';
+import ColorPicker from "react-pick-color";
+
 
 function CustomLoadingOverlay() {
     return (
@@ -42,6 +44,16 @@ export default function Table (props) {
         {field: "id", headerName: "ID", width: 100},
         {field: "attribute_name", headerName: "属性名", width: 200, editable: true},
         {field: "prefix_list", headerName: "プレフィックス", width: 300, editable: true},
+        {field: "color", headerName: "グラフ色", width: 170, editable: true, renderCell: (params) => {
+            const style = {
+                color: params.value
+            }
+            return(
+                <div style={style}>
+                    {params.value}
+                </div>
+            )
+        }},
         {field: "delete", headerName: "削除", width: 120, renderCell: (params) => {
             return(
                 <Button
@@ -58,9 +70,34 @@ export default function Table (props) {
     const contextAlertBar = useContext(AlertBarContext);
     const contextInfo= useContext(infoContext);
 
+    const [colorData, setColorData] = useState({id:null,color:null});
+    const [colorPickerOpen, toggleColorPickerOpen] = useState(false);
+    const handleColorPickerClose = () => {
+        putAttributeData({
+            attribute_id: colorData.id,
+            color: colorData.color
+        })
+        toggleColorPickerOpen(false);
+    }
+    const handleColorSelect = (color) => {
+        setColorData({
+            ...colorData,
+            color: color.hex
+        })
+    }
+    const handleEditCell = (e) => {
+        if(e.field==="color"){
+            setColorData({id:e.id,color:e.value})
+            toggleColorPickerOpen(true)
+        }else if(e.field==="prefix_list"){
+            setPrefixData({attribute_id:e.id,prefix:props.attributeData[e.id].prefix})
+            togglePrefixOpen(true)
+        }
+    }
+
     const [prefixData, setPrefixData] = useState({attribute_id:null,prefix:[]});
     const [prefixOpen, togglePrefixOpen] = useState(false);
-    const handleColorPickerClose = () => togglePrefixOpen(false);
+    const handlePrefixClose = () => togglePrefixOpen(false);
 
     useEffect(() => {
         if(prefixOpen){
@@ -68,12 +105,6 @@ export default function Table (props) {
         }
     },[props.attributeData])
 
-    const handleEditCell = (e) => {
-        if(e.field==="prefix_list"){
-            setPrefixData({attribute_id:e.id,prefix:props.attributeData[e.id].prefix})
-            togglePrefixOpen(true)
-        }
-    }
     const handleCommitCell = (e) => {
         if(e.field!=="prefix_list"){
             if((e.field==="attribute_name" && (e.value.length<=0 || e.value.length>24))){
@@ -133,7 +164,7 @@ export default function Table (props) {
             </Modal>
             <Modal
                 open={prefixOpen}
-                onClose={handleColorPickerClose}
+                onClose={handlePrefixClose}
                 className={classes.modal}
             >
                 <div className={classes.paper}>
@@ -143,6 +174,13 @@ export default function Table (props) {
                         handleRegisterPrefix={handleRegisterPrefix}
                     />
                 </div>
+            </Modal>
+            <Modal
+                open={colorPickerOpen}
+                onClose={handleColorPickerClose}
+                className={classes.modal}
+            >
+                <ColorPicker color={colorData.color} onChange={handleColorSelect}/>
             </Modal>
             <DataGrid
                 components={{
