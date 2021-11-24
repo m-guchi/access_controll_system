@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AlertBarContext } from '../../context/AlertBarContext';
 import { DataGrid, GridOverlay } from '@material-ui/data-grid';
 import { Modal, LinearProgress, Button, Typography } from '@material-ui/core';
-import ColorPicker from "react-pick-color";
 
 
 function CustomLoadingOverlay() {
@@ -43,7 +42,6 @@ export default function AreaTable (props) {
         {field: "area_name", headerName: "エリア名", width: 170, editable: true},
         {field: "capacity", headerName: "定員", width: 120, type:"number", editable: true},
         {field: "hide_dis", headerName: "表示", width: 120, type:"boolean", editable: true ,description:"会場内人数などのグラフに表示するか"},
-        // {field: "color", headerName: "グラフ色", width: 170, editable: true},
         {field: "delete", headerName: "削除", width: 120, renderCell: (params) => {
             return(
                 <Button
@@ -59,35 +57,13 @@ export default function AreaTable (props) {
 
     const contextAlertBar = useContext(AlertBarContext);
     
-    const [colorData, setColorData] = useState({id:null,color:null});
-    const [colorPickerOpen, toggleColorPickerOpen] = useState(false);
-    const handleColorPickerClose = () => {
-        putAreaData({
-            area_id: colorData.id,
-            color: colorData.color
-        })
-        toggleColorPickerOpen(false);
-    }
-    const handleColorSelect = (color) => {
-        setColorData({
-            ...colorData,
-            color: color.hex
-        })
-    }
-
-    const handleEditCell = (e) => {
-        if(e.field==="color"){
-            setColorData({id:e.id,color:e.value})
-            toggleColorPickerOpen(true)
-        }
-    }
     const handleCommitCell = (e) => {
         if(e.field==="hide_dis"){
             putAreaData({
                 area_id: e.id,
                 hide: !e.value
             })
-        }else if(e.field!=="color"){
+        }else{
             if(e.field==="capacity" && (e.value<0 || e.value>1000000)){
                 contextAlertBar.setWarning("定員は0以上1,000,000以下の値を入力してください")
             }else if(e.field==="area_name" && (e.value.length<=0 || e.value.length>50)){
@@ -139,13 +115,6 @@ export default function AreaTable (props) {
                     <Button variant="contained" onClick={handleConfirmDeleteClose}>キャンセル</Button>
                 </div>
             </Modal>
-            <Modal
-                open={colorPickerOpen}
-                onClose={handleColorPickerClose}
-                className={classes.modal}
-            >
-                <ColorPicker color={colorData.color} onChange={handleColorSelect}/>
-            </Modal>
             <DataGrid
                 components={{
                     LoadingOverlay: CustomLoadingOverlay,
@@ -154,7 +123,6 @@ export default function AreaTable (props) {
                 loading={props.isFetching}
                 rows={row}
                 columns={columns}
-                onCellEditStart={handleEditCell}
                 onCellEditCommit={handleCommitCell}
                 rowsPerPageOptions={[]}
                 hideFooterSelectedRowCount
