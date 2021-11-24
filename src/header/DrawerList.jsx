@@ -42,7 +42,6 @@ const settingMgmt = [
     {"key":"setting_attribute","text":"ユーザー属性設定","icon":<GroupAddIcon />},
     {"key":"setting","text":"各種設定","icon":<SettingsIcon />},
     {"key":"delete_data","text":"データ消去","icon":<DeleteSweepIcon />},
-    //token, user_old, user_pass
 ]
 
 const authorityList = [
