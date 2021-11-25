@@ -112,7 +112,10 @@ export default function UsersRegister (props) {
                             })}
                         </Select>
                     </FormControl>
-           </div>
+                </div>
+                <div>
+                    <Button variant="contained" color="primary" onClick={handleRegisterUser} >登録</Button>
+                </div>
             </FormBox>
         </PaperWrap>
     )
