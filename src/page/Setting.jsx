@@ -57,7 +57,6 @@ export default function SettingPage (props) {
         })
     }
     const handleSettingData = (data) => {
-        console.log(data)
         putSettingData(contextToken.token, data)
     }
 

@@ -135,7 +135,6 @@ export default function QrScanPage (props) {
             headers: {"token": token}
         })
         .then(res => {
-            console.log(res)
             if(res.status<=401){
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.ok){
