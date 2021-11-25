@@ -29,6 +29,7 @@ const columns = [
                 component={Link}
                 variant="outlined"
                 color="primary"
+                target="_blank"
             >
                 通過記録
             </Button>
