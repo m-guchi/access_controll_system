@@ -21,9 +21,11 @@ import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 
 const all = [
     {"key":"dashboard","text":"ダッシュボード","icon":<DashboardIcon />},
-    {"key":"qr_scan","text":"コードスキャン","icon":<CropFreeIcon />},
-    {"key":"user_count","text":"会場内人数","icon":<PetsIcon />},
+    // {"key":"user_count","text":"会場内人数","icon":<PetsIcon />},
 ];
+const recordUserPass = [
+    {"key":"qr_scan","text":"通過情報登録","icon":<CropFreeIcon />},
+]
 const userMgmt = [
     {"key":"user_list","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
     //delete user, change area, jump passdata
@@ -45,6 +47,7 @@ const settingMgmt = [
 ]
 
 const authorityList = [
+    {"list":recordUserPass, "auth":"record_user_pass"},
     {"list":userMgmt, "auth":"users_mgmt"},
     {"list":loginUserMgmt, "auth":"login_users_mgmt"},
     {"list":settingMgmt, "auth":"setting_mgmt"},
