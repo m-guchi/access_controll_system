@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { TextField, IconButton } from '@material-ui/core';
+import { TextField, IconButton, Button } from '@material-ui/core';
+import { Link } from 'react-router-dom'
 import { DataGrid, GridToolbar } from '@material-ui/data-grid';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
@@ -63,15 +64,29 @@ function QuickSearchToolbar(props) {
     );
 }
 
-const columns = [
-    {field: "user_id", headerName: "ユーザーID", width: 200},
-    {field: "attribute_name", headerName: "属性", width: 140},
-    {field: "time", headerName: "最終通過時間", width: 200},
-    {field: "area_id", headerName: "エリアID", width: 150},
-    {field: "area_name", headerName: "エリア名", width: 180},
-]
 
 export default function VisitorsTable (props) {
+    
+    const columns = [
+        {field: "user_id", headerName: "ユーザーID", width: 200},
+        {field: "attribute_name", headerName: "属性", width: 140},
+        {field: "time", headerName: "最終通過時間", width: 200},
+        {field: "area_id", headerName: "エリアID", width: 150},
+        {field: "area_name", headerName: "エリア名", width: 180},
+        {field: "delete", headerName: "通過記録", width: 150, renderCell: (params) => {
+            return(
+                <Button
+                    to={"/log_user_pass?user_id="+params.id}
+                    component={Link}
+                    variant="outlined"
+                    color="primary"
+                    target="_blank"
+                >
+                    通過記録
+                </Button>
+            )
+        }},
+    ]
 
     const [searchText, setSearchText] = useState(null);
     const [rows, setRows] = useState(props.userData);

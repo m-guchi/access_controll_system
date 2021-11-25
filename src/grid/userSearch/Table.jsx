@@ -1,6 +1,8 @@
 import React from 'react'
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { DataGrid, GridToolbar, GridOverlay } from '@material-ui/data-grid';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom'
 
 
 
@@ -20,6 +22,18 @@ function CustomLoadingOverlay() {
 
 const columns = [
     {field: "id", headerName: "ユーザーID", width: 200},
+    {field: "delete", headerName: "通過記録", width: 150, renderCell: (params) => {
+        return(
+            <Button
+                to={"/log_user_pass?user_id="+params.id}
+                component={Link}
+                variant="outlined"
+                color="primary"
+            >
+                通過記録
+            </Button>
+        )
+    }},
 ]
 
 export default function UserSearchTable (props) {

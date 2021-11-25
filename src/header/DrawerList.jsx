@@ -28,7 +28,7 @@ const recordUserPass = [
 ]
 const userMgmt = [
     {"key":"user_list","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
-    //delete user, change area, jump passdata
+    //delete user, change area
     {"key":"user_search","text":"ユーザー検索","icon":<SearchIcon />},
     {"key":"log_user_pass","text":"受付通過記録","icon":<HowToVoteIcon />},
     {"key":"ticket_list","text":"チケット管理","icon":<ConfirmationNumberIcon />},
