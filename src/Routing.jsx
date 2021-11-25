@@ -33,7 +33,7 @@ export default function Routing () {
             <SetContext>
                 <Header>
                     <article className={classes.main}>
-                        <Route exact path="/"/>
+                        <Route exact path="/" component={DashboardPage}/>
                         <Route path="/dashboard" component={DashboardPage}/>
                         <Route path="/qr_scan" component={QrScanPage}/>
                         <Route path="/user_count" component={UserCountPage}/>
