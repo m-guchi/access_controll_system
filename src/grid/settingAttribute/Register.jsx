@@ -96,7 +96,7 @@ export default function Register (props) {
                         onChange={handleColor}
                     />
                 </div>
-                    <Typography color="secondary" variant="body2">属性は登録後に上のテーブルから該当するIDのプレフィックスをダブルクリックして追加してください。</Typography>
+                    <Typography color="secondary" variant="body2">属性登録後に上のテーブルから該当するIDのプレフィックス欄をダブルクリックして追加してください。</Typography>
                 <div>
                     <Button variant="contained" color="primary" onClick={handleRegisterAttribute} >登録</Button>
                 </div>
