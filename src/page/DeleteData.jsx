@@ -23,7 +23,7 @@ export default function DeleteDataPage (props) {
         })
         .then(res => {
             if(res.status===204){
-                contextAlertBar.setSuccess(date+"ユーザー情報を削除しました");
+                contextAlertBar.setSuccess(date+" ユーザー/チケット情報を削除しました");
             }else if(res.status<=401){
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.error.type==="need_this_token"){
@@ -43,7 +43,7 @@ export default function DeleteDataPage (props) {
         })
         .then(res => {
             if(res.status===204){
-                contextAlertBar.setSuccess(date+"通過情報を削除しました");
+                contextAlertBar.setSuccess(date+" 通過情報を削除しました");
             }else if(res.status<=401){
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.error.type==="need_this_token"){
@@ -81,7 +81,7 @@ export default function DeleteDataPage (props) {
                     <DeleteBox
                         handleDelete={handleDelete}
                         type="user"
-                        title="ユーザー情報削除"
+                        title="ユーザー/チケット情報削除"
                         describe={
                             <>
                                 最終更新日時が指定日時より前の情報が削除されます。以下のデータに影響します。
@@ -93,7 +93,7 @@ export default function DeleteDataPage (props) {
                         }
                         deleteAlert={
                             <>
-                                ユーザー情報を削除します。以下に関連するデータに影響します。
+                                ユーザー/チケット情報を削除します。以下に関連するデータに影響します。
                                 <ul>
                                     <li>ユーザー一覧</li>
                                     <li>チケット管理</li>
