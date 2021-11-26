@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext }  from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, FormControlLabel, Checkbox } from '@material-ui/core';
 import { tokenContext } from '../context/token';
 import { infoContext } from '../context/info';
 import { customAxios } from '../templete/Axios';
@@ -14,13 +14,40 @@ export default function UserListPage (props) {
     const contextInfo = useContext(infoContext)
     const contextAlertBar = useContext(AlertBarContext)
 
-    const [userData, setUserData] = useState(null)
+    const [userAllData, setUserAllData] = useState(null)
+    const [userData, setUserData] = useState(null);
     const [isFetching, toggleFetching] = useState(true);
+
+    const [isAllUser, setIsAllUser] = useState(false);
+    const handleChangeAllUser = () => {
+        setIsAllUser(!isAllUser);
+    }
 
     useEffect(() => {
         fetchUser();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const hideAreaArr = !contextInfo ? [] : Object.keys(contextInfo.data.area).filter(index => {
+        const areaData = contextInfo.data.area[index];
+        return Boolean(Number(areaData.hide))
+    });
+    useEffect(() => {
+        if(userAllData){
+            if(isAllUser){
+                setUserData(userAllData)
+            }else{
+                const userData = Object.keys(userAllData).reduce((acc,index) => {
+                    const user = userAllData[index];
+                    if(!hideAreaArr.includes(user.area_id)){
+                        acc[index] = user;
+                    }
+                    return acc;
+                },[])
+                setUserData(userData)
+            }
+        }
+    }, [isAllUser, userAllData])
 
     const getUserData = (token) => {
         toggleFetching(true);
@@ -31,7 +58,7 @@ export default function UserListPage (props) {
             if(res.status<=401){
                 if(res.data.token) contextToken.set(res.data.token);
                 if(res.data.ok){
-                    setUserData(res.data.data.users);
+                    setUserAllData(res.data.data.users);
                     toggleFetching(false);
                 }else if(res.data.error.type==="need_this_token"){
                     getUserData(res.data.token);
@@ -53,7 +80,11 @@ export default function UserListPage (props) {
         <Forbidden authority="users_mgmt">
             <Grid container>
                 <Grid item xs={12}>
-                    <ReloadButton onClick={fetchUser}/>
+                    <ReloadButton onClick={fetchUser}/><br/>
+                    <FormControlLabel
+                        control={<Checkbox color="primary" checked={isAllUser} onChange={handleChangeAllUser} name="allUser" />}
+                        label="すべてのユーザーを表示する"
+                    />
                     <VisitorsTable
                         infoData={contextInfo.data}
                         userData={userData}
