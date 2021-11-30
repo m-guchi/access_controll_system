@@ -42,7 +42,7 @@ export default function PrefixBox (props) {
     return(
         <div className={classes.root}>
             <Typography variant="h6">プレフィックス登録/削除</Typography>
-            <Typography variant="body2">ユーザーIDを先頭から読んだときにある属性のプレフィックスと一致する場合、ユーザーはその属性としてカウントされます。</Typography>
+            <Typography variant="body2">ユーザーIDを先頭から読んだときに以下の文字列と一致する場合、ユーザーはこの属性としてカウントされます。</Typography>
             <div>
                 {
                     props.prefixList && props.prefixList.map((val,index) => {
