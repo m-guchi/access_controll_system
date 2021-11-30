@@ -186,7 +186,7 @@ export default function SettingAttributePage (props) {
             <Grid container>
                 <Grid item xs={12}>
                     <ReloadButton onClick={fetchInfoData}/>
-                    <Typography variant="body2" color="secondary">ダブルクリックで更新可能(属性名/プレフィックス)</Typography>
+                    <Typography variant="body2" color="secondary">ダブルクリックで更新可能(属性名/プレフィックス/グラフ色)</Typography>
                     <Table
                         attributeData={attributeData}
                         isFetching={isFetching}
