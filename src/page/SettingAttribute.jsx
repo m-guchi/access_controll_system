@@ -98,6 +98,7 @@ export default function SettingAttributePage (props) {
                     if(res.data.ok){
                         if(res.data.error.type==="need_this_token"){
                             deletePrefixData(res.data.token, data);
+                            toggleFetching(false);
                         }else{
                             toggleFetching(false);
                         }
@@ -133,6 +134,8 @@ export default function SettingAttributePage (props) {
                     toggleFetching(false);
                 }else if(res.data.error.type==="need_this_token"){
                     postPrefixData(res.data.token, data);
+                }else if(res.data.error.type==="already_attribute_id_and_prefix"){
+                    contextAlertBar.setWarning("このプレフィックス( "+data.prefix+" )はすでに存在します")
                 }else{
                     contextAlertBar.setOtherError(res.data.error);
                     toggleFetching(false);
