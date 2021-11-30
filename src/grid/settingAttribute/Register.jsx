@@ -90,7 +90,7 @@ export default function Register (props) {
                     />
                 </div>
                 <div>
-                    <Typography variant="caption" color="textSecondary" align="left" display="block">グラフ色(会場内人数)</Typography>
+                    <Typography variant="caption" color="textSecondary" align="left" display="block">グラフ色(ダッシュボード)</Typography>
                     <ColorPicker
                         color={color}
                         onChange={handleColor}

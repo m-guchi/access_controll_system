@@ -109,7 +109,7 @@ export default function Register (props) {
                 <div>
                     <FormControlLabel
                         control={<Checkbox checked={!hide} onChange={handleHide} name="hide" />}
-                        label="グラフ表示"
+                        label="表示"
                     />
                 </div>
                 <div>
