@@ -59,7 +59,6 @@ export default function Register (props) {
                 area_name: areaName,
                 capacity: Number(capacity),
                 hide: hide,
-                color: "#123456" //消す
             })
         }
     }
