@@ -1,6 +1,5 @@
 import React, { useState, useContext, useCallback } from 'react'
-import { TextField, Typography, Button, FormControlLabel, Checkbox,  Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
-import { infoContext } from '../../context/info';
+import { TextField, Typography, Button } from '@material-ui/core';
 import { AlertBarContext } from '../../context/AlertBarContext';
 import { checkTextNullOrSpace } from '../../atoms/checkText';
 import PaperWrap from '../../templete/Paper';
@@ -10,7 +9,6 @@ import ColorPicker from "react-pick-color";
 
 export default function Register (props) {
     const contextAlertBar = useContext(AlertBarContext)
-    const contextInfo = useContext(infoContext)
 
     const [attributeId, setAttributeId] = useState(null);
     const [attributeName, setAttributeName] = useState(null);

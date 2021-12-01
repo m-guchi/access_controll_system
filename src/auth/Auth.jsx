@@ -51,6 +51,7 @@ export default function Auth (props) {
             setLoaded(true);
             contextAlertBar.setError("データベースでエラーが発生しました。(errorMsg="+err.response.data.error.message+")")
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[useToken])
 
     const handleSubmitButton = (e) => {
@@ -75,7 +76,7 @@ export default function Auth (props) {
             password: password,
         })
         .then(res => {
-            if(res.status==200 && res.data.ok){
+            if(res.status===200 && res.data.ok){
                 setErrorLogin(null);
                 useToken.set(res.data.token);
                 contextAlertBar.setSuccess("ログインしました")

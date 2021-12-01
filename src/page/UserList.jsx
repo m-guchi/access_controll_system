@@ -47,6 +47,7 @@ export default function UserListPage (props) {
                 setUserData(userData)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAllUser, userAllData])
 
     const getUserData = (token) => {

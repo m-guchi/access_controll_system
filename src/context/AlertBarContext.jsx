@@ -27,12 +27,15 @@ const useAlertBar = () => {
     },[]);
     const setError = useCallback((message) => {
         set(true,"error",message);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     const setWarning = useCallback((message) => {
         set(true,"warning",message);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
     const setSuccess = useCallback((message) => {
         set(true,"success",message);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
     const setOtherError = useCallback((errorData) => {
         setData({

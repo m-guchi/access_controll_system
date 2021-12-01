@@ -1,7 +1,6 @@
-import React, { useState, useContext }  from 'react';
-import { Grid ,Typography, Button, TextField } from '@material-ui/core';
+import React, { useContext }  from 'react';
+import { Grid } from '@material-ui/core';
 import { tokenContext } from '../context/token';
-import { infoContext } from '../context/info';
 import { AlertBarContext } from '../context/AlertBarContext';
 import { customAxios } from '../templete/Axios';
 import Forbidden from '../templete/Forbidden';
@@ -10,7 +9,6 @@ import DeleteBox from '../grid/deleteData/DeleteBox'
 
 export default function DeleteDataPage (props) {
     const contextToken = useContext(tokenContext);
-    const contextInfo = useContext(infoContext);
     const contextAlertBar = useContext(AlertBarContext);
 
 
@@ -68,6 +66,8 @@ export default function DeleteDataPage (props) {
                 break;
             case "token":
                 deletePassData(token, deleteDate);
+                break;
+            default:
                 break;
         }
     }

@@ -41,7 +41,7 @@ export default function CountTable (props) {
                     }else if(rate >= Number(contextInfo.data.setting.user_count_yellow_rate.value)){
                         rowClass = classes.yellow;
                     }
-                    const disRate = areaData.capacity==0 ? "---" : rate+" %";
+                    const disRate = Number(areaData.capacity)===0 ? "---" : rate+" %";
                     return (
                         <TableRow key={areaId} className={rowClass}>
                             <TableCell align="left">{areaData.area_name} ( {areaId} )</TableCell>

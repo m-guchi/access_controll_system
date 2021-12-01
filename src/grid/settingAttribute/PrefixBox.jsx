@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Typography, FormControl, Input, InputAdornment, IconButton } from '@material-ui/core';
+import { Typography, Input, InputAdornment, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { AlertBarContext } from '../../context/AlertBarContext';

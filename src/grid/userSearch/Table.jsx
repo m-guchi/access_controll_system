@@ -6,10 +6,6 @@ import { Link } from 'react-router-dom'
 
 
 
-function escapeRegExp(value) {
-    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-}
-
 function CustomLoadingOverlay() {
     return (
         <GridOverlay>

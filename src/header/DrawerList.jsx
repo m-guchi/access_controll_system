@@ -9,7 +9,6 @@ import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import PetsIcon from '@material-ui/icons/Pets';
 import RoomIcon from '@material-ui/icons/Room';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
 import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
@@ -21,18 +20,15 @@ import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 
 const all = [
     {"key":"dashboard","text":"ダッシュボード","icon":<DashboardIcon />},
-    // {"key":"user_count","text":"会場内人数","icon":<PetsIcon />},
 ];
 const recordUserPass = [
     {"key":"qr_scan","text":"通過情報登録","icon":<CropFreeIcon />},
 ]
 const userMgmt = [
     {"key":"user_list","text":"ユーザー一覧","icon":<SupervisorAccountIcon />},
-    //delete user, change area
     {"key":"user_search","text":"ユーザー検索","icon":<SearchIcon />},
     {"key":"log_user_pass","text":"受付通過記録","icon":<HowToVoteIcon />},
     {"key":"ticket_list","text":"チケット管理","icon":<ConfirmationNumberIcon />},
-    //delete ticket
 ];
 const loginUserMgmt = [
     {"key":"user_mgmt","text":"ログインユーザー","icon":<PeopleAltIcon />},

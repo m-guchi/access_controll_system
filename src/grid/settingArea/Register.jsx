@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react'
 import { TextField, Typography, Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import { infoContext } from '../../context/info';
 import { AlertBarContext } from '../../context/AlertBarContext';
 import { checkTextNullOrSpace } from '../../atoms/checkText';
 import PaperWrap from '../../templete/Paper';

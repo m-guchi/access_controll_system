@@ -91,6 +91,7 @@ export default function LogGateTable (props) {
         if(props.defaultUserId!=null){
             requestSearch(props.defaultUserId)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[props.logData])
 
     const requestSearch = (searchValue) => {

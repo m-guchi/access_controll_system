@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, LinearProgress, Button, Typography } from '@material-ui/core';
 import { DataGrid, GridOverlay } from '@material-ui/data-grid';
-import { infoContext } from '../../context/info';
 import { AlertBarContext } from '../../context/AlertBarContext';
 import PrefixBox from './PrefixBox';
 import ColorPicker from "react-pick-color";
@@ -68,7 +67,6 @@ export default function Table (props) {
     ]
 
     const contextAlertBar = useContext(AlertBarContext);
-    const contextInfo= useContext(infoContext);
 
     const [colorData, setColorData] = useState({id:null,color:null});
     const [colorPickerOpen, toggleColorPickerOpen] = useState(false);
@@ -103,6 +101,7 @@ export default function Table (props) {
         if(prefixOpen){
             setPrefixData({...prefixData ,prefix:props.attributeData[prefixData.attribute_id].prefix})
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[props.attributeData])
 
     const handleCommitCell = (e) => {
