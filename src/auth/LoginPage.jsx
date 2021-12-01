@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { FormControl, InputLabel, Input, InputAdornment, Paper, Button, Typography } from '@material-ui/core'
 import ReactLoading from 'react-loading';
+import AlertBar from '../atoms/AlertBar';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
@@ -82,6 +83,7 @@ export default function LoginPage (props) {
                     </Button>
                 </Paper>
             </form>
+            <AlertBar/>
         </div>
     )
 }

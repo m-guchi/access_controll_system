@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import LoginPage from './LoginPage';
+import { AlertBarContext } from '../context/AlertBarContext';
 import { customAxios } from '../templete/Axios';
 import { tokenContext } from '../context/token';
 
@@ -7,14 +8,17 @@ import { tokenContext } from '../context/token';
 export default function Auth (props) {
     const [isLoaded, setLoaded] = useState(false);
 
+    
+    
     const [isLogin, setLogin] = useState(false);
     const [errorLogin, setErrorLogin] = useState(null);
     const [isSubmitLoginLoading, setSubmitLoginLoading] = useState(false);
-
+    
     const [loginId, setLoginId] = useState(null);
     const [password, setPassword] = useState(null);
     
     const useToken = useContext(tokenContext);
+    const contextAlertBar = useContext(AlertBarContext)
 
     useEffect(() => {
         fetchLogin(useToken.token)
@@ -42,6 +46,10 @@ export default function Auth (props) {
             }else{
                 setLoaded(true);
             }
+        })
+        .catch(err => {
+            setLoaded(true);
+            contextAlertBar.setError("データベースでエラーが発生しました。(errorMsg="+err.response.data.error.message+")")
         })
     },[useToken])
 
@@ -75,13 +83,13 @@ export default function Auth (props) {
                 const type = res.data.error.type;
                 switch(type){
                     case "not_in_user":
-                        setErrorLogin("ログインIDが異なります");
+                        contextAlertBar.setWarning("ログインIDが異なります。")
                         break;
                     case "invalid_password":
-                        setErrorLogin("パスワードが異なります");
+                        contextAlertBar.setWarning("パスワードが異なります")
                         break;
                     default:
-                        setErrorLogin("エラーが発生しました");
+                        contextAlertBar.setOtherError(res.data.error)
                         break;
                 }
             }

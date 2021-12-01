@@ -12,11 +12,11 @@ function App() {
     return (
         <div className="App">
             <tokenContext.Provider value={tokenContextData}>
-                <Auth>
-                    <AlertBarProvider>
+                <AlertBarProvider>
+                    <Auth>
                         <Routing/>
-                    </AlertBarProvider>
-                </Auth>
+                    </Auth>
+                </AlertBarProvider>
             </tokenContext.Provider>
         </div>
     );
