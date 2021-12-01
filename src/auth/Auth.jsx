@@ -78,6 +78,7 @@ export default function Auth (props) {
             if(res.status==200 && res.data.ok){
                 setErrorLogin(null);
                 useToken.set(res.data.token);
+                contextAlertBar.setSuccess("ログインしました")
                 setLogin(true);
             }else{
                 const type = res.data.error.type;
@@ -87,6 +88,9 @@ export default function Auth (props) {
                         break;
                     case "invalid_password":
                         contextAlertBar.setWarning("パスワードが異なります")
+                        break;
+                    case "invalid_param":
+                        contextAlertBar.setWarning("ユーザーIDとパスワードを入力してください")
                         break;
                     default:
                         contextAlertBar.setOtherError(res.data.error)
