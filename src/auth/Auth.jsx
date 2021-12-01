@@ -26,6 +26,15 @@ export default function Auth (props) {
                 }else{
                     if(res.data.token){
                         useToken.set(res.data.token);
+                        fetchLogin(res.data.token)
+                        .then(res => {
+                            if(res.status===200 && res.data.data.login){
+                                setLogin(true);
+                                setLoaded(true);
+                            }else{
+                                setLoaded(true);
+                            }
+                        })
                     }else{
                         setLoaded(true);
                     }
