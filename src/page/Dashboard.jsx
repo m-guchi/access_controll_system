@@ -76,7 +76,7 @@ export default function DashboardPage (props) {
                     { Boolean(Number(contextInfo.data.setting.use_ticket.value)) &&
                         <Grid item sm={4} xs={6}>
                             <Card variant="outlined">
-                                <CardActionArea component={RouterLink} to="/tiket_list">
+                                <CardActionArea component={RouterLink} to="/ticket_list">
                                     <CardContent>
                                         <Typography>チケット管理</Typography>
                                         <Typography variant="body2" color="textSecondary">チケット一覧を表示します。チケットはユーザーIDと紐付けて使用することが可能です。</Typography>
